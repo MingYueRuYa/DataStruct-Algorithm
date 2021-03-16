@@ -334,7 +334,18 @@ namespace DSA
 			// 用户的索引是0开始的，而我们实际是从1开始
 			// 所以data_index += 1;
 			void change(int data_index, Item new_data) {
+				assert(data_index+1 <= count);
+				
+				data_index += 1;
+
+				// 注意indexes的顺序就是索引堆在内存的顺序
+				// 实际上indexes里面保存的是data中数据的索引
+				data[indexes[data_index]] = new_data;
+				shiftUp(data_index);
+				shiftDown(data_index);
+
 				//1.找到堆中实际对应的索引位置
+				/*
 				int actual_index = 0;
 				data_index += 1;
 				int i = 0;
@@ -349,9 +360,10 @@ namespace DSA
 					return; 
 				}
 
-				data[indexes[i]] = new_data;
+				data[i] = new_data;
 				shiftUp(i);
 				shiftDown(i);
+				*/
 			}
 
 		public:
@@ -557,13 +569,34 @@ namespace DSA
 			cout << "get item max:" << data << endl;
 			index_max_heap.testPrint();
 
-			int data_index = index_max_heap.getMaxHeapIndex();
-			cout << "get max index:" << data_index << endl;
-			index_max_heap.testPrint();
+			// int data_index = index_max_heap.getMaxHeapIndex();
+			// cout << "get max index:" << data_index << endl;
+			// index_max_heap.testPrint();
 
-			index_max_heap.change(1, 30);
-			cout << "change 1 position value is 30:" << endl;
-			index_max_heap.testPrint();
+			// IndexMaxHeap<int> index_max_heap2 = IndexMaxHeap<int>(100);
+			// for (int i = 1; i < 6; ++i) {
+				// index_max_heap2.insert(i-1, i*10);
+				// cout << value << " ";
+			// }
+			// cout << endl;
+			// index_max_heap2.testPrint();
+
+
+			while (1) {
+				int change_value = 0, change_position = 0;
+				cout << "input change position:";
+				std::cin >> change_position;
+
+				cout << "input change value:";
+				std::cin >> change_value;
+
+				cout << "input change value:" << change_value << endl;
+				cout << "input change postion:" << change_position << endl;
+
+				index_max_heap.change(change_position, change_value);
+				cout << "change 5 position value is 30:" << endl;
+				index_max_heap.testPrint();
+			}
 
 			// print result:
 			// 4 9 8 2 4 1 3 5 4 7
