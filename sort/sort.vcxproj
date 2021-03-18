@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="binary_search_tree.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="homework.h" />
     <ClInclude Include="pch.h" />
