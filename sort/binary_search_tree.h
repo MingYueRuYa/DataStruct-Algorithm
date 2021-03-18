@@ -103,6 +103,103 @@ namespace BinarySearchTree {
 
 		delete[] a;
 	}
+
+	template<typename Key, typename Value>
+	class BinarySearchTree {
+	private:
+		struct Node {
+			Key key;
+			Value value;
+			Node *left;
+			Node rigth;
+
+			Node(Key key, Value value) {
+				this->key = key;
+				this->value = value;
+				this->left = this->rigth = nullptr;
+			}
+		};
+
+		// 向以node为根的二分搜索树中, 插入节点(key, value), 使用递归算法
+		// 返回插入新节点后的二分搜索树的根
+		Node * _insert(Node *node, Key key, Value value)
+		{
+			if (nullptr == node) {
+				++count;
+				node = new Node(key, value);
+				return node;
+			}
+
+			if (node->key == key) {
+				node->value = value;
+			} else if (key < node->key) {
+				node->left = _insert(node->left, key, value);
+			} else if (key > node->key) {
+				node->right = _insert(node->right, key, value);
+			}
+
+			return node;
+		}
+
+		// 查看以node为根的二分搜索树中是否包含键值为key的节点, 使用递归算法
+		bool _contain(Node *node, Key key)
+		{
+			if (nullptr == node) { return false; }
+
+			if (node->key == key) {
+				return true;
+			} else if (key < node->key) {
+				return _contain(node->left, key);
+			} else if (key > node->key) {
+				return _contain(node->right, key);
+			}
+		}
+
+		Value* _search(Node *node, Key key)
+		{
+			if (nullptr == node) { return nullptr; }
+
+			if (node->key = key) {
+				return &(node->value);
+			} else if (key < node->key) {
+				return _search(node->left, key);
+			} else if (key > node->key) {
+				return _search(node->right, key);
+			}
+		}
+
+		int count = 0;
+		Node *root = nullptr;
+
+	public:
+		BinarySearchTree() {}
+		~BinarySearchTree() {}
+
+		// 返回二叉搜索树中的元素个数
+		int size() {
+			return count;
+		}
+
+		// 是否为空
+		bool isEmpty() {
+			return 0 == count;
+		}
+
+		void insert(Key key, Value value)
+		{
+			_insert(root, key, value);
+		}
+
+		bool contain(Key key)
+		{
+			return _contain(root, key);
+		}
+
+		Value *search(Key key)
+		{
+			return _search(root, key);
+		}
+	};
 }
 }
 
