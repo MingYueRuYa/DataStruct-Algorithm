@@ -155,9 +155,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="binary_search_tree.h" />
+    <ClInclude Include="FileOps.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="homework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SequenceST.h" />
     <ClInclude Include="sorthelper.h" />
     <ClInclude Include="test_sort.h" />
   </ItemGroup>

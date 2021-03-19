@@ -3,6 +3,7 @@
 #include "sorthelper.h"
 #include "homework.h"
 #include "heap.h"
+#include "binary_search_tree.h"
 #include <iostream>
 
 using std::cout;
@@ -27,5 +28,8 @@ int main()
 
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
-    DSA::Heap::test_index_max_heap();
+    // DSA::Heap::test_index_max_heap();
+
+    // DSA::BinarySearchTree::test_for_recursion_effciency();
+    DSA::BinarySearchTree::test_bst_search();
 }

@@ -3,12 +3,19 @@
 #ifndef binary_search_tree_h
 #define binary_search_tree_h
 
+#include "FileOps.h"
+#include "SequenceST.h"
+
 #include <ctime>
 #include <cassert>
+#include <vector>
+#include <string>
 #include <iostream>
 
 using std::cout;
 using std::endl;
+using std::vector;
+using std::string;
 
 // data struct and algorithm
 namespace DSA {
@@ -21,9 +28,9 @@ namespace BinarySearchTree {
 	{
 		// 在[left, right]范围中查找
 		int left = 0, right = n-1;
-		// 注意这里如果采用(left+right)/2可能会产生溢出
-		int mid = left + (right-left)/2;
 		while (left <= right) {
+			// 注意这里如果采用(left+right)/2可能会产生溢出
+			int mid = left + (right-left)/2;
 			if (target == arr[mid]) {
 				return mid;
 			} else if (target < arr[mid]) { 
@@ -43,9 +50,7 @@ namespace BinarySearchTree {
 	template<typename T>
 	int _binarySearch2(T arr[], int left, int right, T target)
 	{
-		if (left >= right) {
-			return -1;
-		}
+		if (left >= right) { return -1; }
 
 		int mid = left + (right-left)/2;
 		if (target == arr[mid]) {
@@ -57,6 +62,8 @@ namespace BinarySearchTree {
 			// left = mid+1;
 			return _binarySearch2(arr, mid + 1, right, target);
 		}
+
+		return -1;
 	}
 
 	template<typename T>
@@ -67,7 +74,7 @@ namespace BinarySearchTree {
 
 	void test_for_recursion_effciency()
 	{
-		int n = 1000000;
+		int n = 100000;
 		int* a = new int[n];
 		for (int i = 0; i < n; i++)
 			a[i] = i;
@@ -80,10 +87,6 @@ namespace BinarySearchTree {
 		// 对[N...2*N)区间的数值使用二分查找，因为这些数字不在arr中，结果为-1
 		for (int i = 0; i < 2 * n; i++) {
 			int v = binarySearch(a, n, i);
-			if (i < n)
-				assert(v == i);
-			else
-				assert(v == -1);
 		}
 		clock_t endTime = clock();
 		cout << "Binary Search (Without Recursion): " << double(endTime - startTime) / CLOCKS_PER_SEC << " s" << endl;
@@ -93,10 +96,6 @@ namespace BinarySearchTree {
 
 		for (int i = 0; i < 2 * n; i++) {
 			int v = binarySearch2(a, n, i);
-			if (i < n)
-				assert(v == i);
-			else
-				assert(v == -1);
 		}
 		endTime = clock();
 		cout << "Binary Search (Recursion): " << double(endTime - startTime) / CLOCKS_PER_SEC << " s" << endl;
@@ -111,12 +110,12 @@ namespace BinarySearchTree {
 			Key key;
 			Value value;
 			Node *left;
-			Node rigth;
+			Node *right;
 
 			Node(Key key, Value value) {
 				this->key = key;
 				this->value = value;
-				this->left = this->rigth = nullptr;
+				this->left = this->right = nullptr;
 			}
 		};
 
@@ -153,19 +152,23 @@ namespace BinarySearchTree {
 			} else if (key > node->key) {
 				return _contain(node->right, key);
 			}
+
+			return false;
 		}
 
 		Value* _search(Node *node, Key key)
 		{
 			if (nullptr == node) { return nullptr; }
 
-			if (node->key = key) {
+			if (node->key == key) {
 				return &(node->value);
 			} else if (key < node->key) {
 				return _search(node->left, key);
 			} else if (key > node->key) {
 				return _search(node->right, key);
 			}
+
+			return nullptr;
 		}
 
 		int count = 0;
@@ -187,7 +190,7 @@ namespace BinarySearchTree {
 
 		void insert(Key key, Value value)
 		{
-			_insert(root, key, value);
+			root = _insert(root, key, value);
 		}
 
 		bool contain(Key key)
@@ -200,6 +203,68 @@ namespace BinarySearchTree {
 			return _search(root, key);
 		}
 	};
+
+	void test_bst_search()
+	{
+		string file_name = "../test_files/bible.txt";
+		vector<string> words = {};
+		if (! FileOps::readFile(file_name, words)) {
+			cout << "read bible file error." << endl;
+			return;
+		}
+
+		cout << "There are totally " << words.size() << " words in " << file_name << endl;
+		cout << endl;
+
+		time_t startTime = clock();
+
+		BinarySearchTree<string, int> bst_words = BinarySearchTree<string, int>();
+		for(auto &item : words) {
+			int *count = bst_words.search(item);
+			if (nullptr == count) {
+				bst_words.insert(item, 1);
+			} else {
+				++(*count);
+			}
+		}
+
+        // 输出圣经中god一词出现的频率
+        if(bst_words.contain("god"))
+            cout << "'god' : " << *bst_words.search("god") << endl;
+        else
+            cout << "No word 'god' in " << file_name << endl;
+
+        time_t endTime = clock();
+
+        cout << "BST , time: " << double(endTime - startTime) / CLOCKS_PER_SEC << " s." << endl;
+        cout << endl;
+
+		// 测试顺序查找表 SST
+		startTime = clock();
+
+		// 统计圣经中所有词的词频
+		// 注: 这个词频统计法相对简陋, 没有考虑很多文本处理中的特殊问题
+		// 在这里只做性能测试用
+		SequenceST<string, int> sst = SequenceST<string, int>();
+		for (vector<string>::iterator iter = words.begin(); iter != words.end(); iter++) {
+			int* res = sst.search(*iter);
+			if (res == NULL)
+				sst.insert(*iter, 1);
+			else
+				(*res)++;
+		}
+
+		// 输出圣经中god一词出现的频率
+		if (sst.contain("god"))
+			cout << "'god' : " << *sst.search("god") << endl;
+		else
+			cout << "No word 'god' in " << file_name << endl;
+
+		endTime = clock();
+
+		cout << "SST , time: " << double(endTime - startTime) / CLOCKS_PER_SEC << " s." << endl;
+
+	}
 }
 }
 
