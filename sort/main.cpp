@@ -31,5 +31,6 @@ int main()
     // DSA::Heap::test_index_max_heap();
 
     // DSA::BinarySearchTree::test_for_recursion_effciency();
-    DSA::BinarySearchTree::test_bst_search();
+    // DSA::BinarySearchTree::test_bst_search();
+    DSA::BinarySearchTree::test_bst_traverse();
 }

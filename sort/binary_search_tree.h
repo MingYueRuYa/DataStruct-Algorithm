@@ -11,10 +11,12 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <deque>
 
 using std::cout;
 using std::endl;
 using std::vector;
+using std::deque;
 using std::string;
 
 // data struct and algorithm
@@ -171,6 +173,32 @@ namespace BinarySearchTree {
 			return nullptr;
 		}
 
+		void _inOrder(Node *node) 
+		{
+			if (nullptr == node) { return; }
+
+			cout << node->key << " ";
+
+			_inOrder(node->left);
+			_inOrder(node->right);
+		}
+
+		void _midOrder(Node *node) {
+			if (nullptr == node) { return; }
+
+			_midOrder(node->left);
+			cout << node->key << " "; 
+			_midOrder(node->right);
+		}
+
+		void _postOrder(Node *node) {
+			if (nullptr == node) { return; }
+
+			_postOrder(node->left);
+			_postOrder(node->right);
+			cout << node->key << " "; 
+		}
+
 		int count = 0;
 		Node *root = nullptr;
 
@@ -201,6 +229,44 @@ namespace BinarySearchTree {
 		Value *search(Key key)
 		{
 			return _search(root, key);
+		}
+
+		// 前序遍历
+		void inOrder() {
+			_inOrder(root);
+			cout << endl;
+		}
+
+		// 中序遍历
+		void midOrder() {
+			_midOrder(root);
+			cout << endl;
+		}
+
+		void postOrder() {
+			_postOrder(root);
+			cout << endl;
+		}
+
+		// 层次遍历
+		// 在进行层次遍历的时候，需要借助队列容器
+		void levelOrder() {
+			deque<Node*> node_queue = {root};
+			while (! node_queue.empty()) {
+				Node* node = node_queue.front();
+				node_queue.pop_front();
+
+				if (nullptr == node) { continue; }
+				cout << node->key << " ";
+				
+				if (nullptr != node->left) {
+					node_queue.push_back(node->left);
+				}
+
+				if (nullptr != node->right) {
+					node_queue.push_back(node->right);
+				}
+			}
 		}
 	};
 
@@ -263,7 +329,27 @@ namespace BinarySearchTree {
 		endTime = clock();
 
 		cout << "SST , time: " << double(endTime - startTime) / CLOCKS_PER_SEC << " s." << endl;
+	}
 
+	void test_bst_traverse()
+	{
+		BinarySearchTree<int, int> bst = BinarySearchTree<int, int>();
+
+		bst.insert(10, 5);
+		bst.insert(5, 5);
+		bst.insert(6, 5);
+		bst.insert(20, 5);
+		bst.insert(8, 5);
+		bst.insert(4, 5);
+
+		bst.inOrder();
+		bst.midOrder();
+		bst.postOrder();
+		bst.levelOrder();
+		// in order: 10 5 4 6 8 20
+		// mid order: 4 5 6 8 10 20
+		// post order: 4 8 6 5 20 10
+		// level orfer: 10 5 20 4 6 8
 	}
 }
 }
