@@ -15,9 +15,9 @@ int main()
 
     // test_merge_sort();
 
-//     for (int i = 0; i < 10; ++i) {
-//         test_merge_bottom_up_sort();
-//     }
+    // for (int i = 0; i < 10; ++i) {
+        // test_merge_bottom_up_sort();
+    // }
 
     // test_quick_sort();
 
