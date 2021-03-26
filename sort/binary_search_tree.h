@@ -204,7 +204,10 @@ namespace BinarySearchTree {
 
 	public:
 		BinarySearchTree() {}
-		~BinarySearchTree() {}
+		~BinarySearchTree() {
+			// 采用层次遍历的方式，释放节点
+			destroy(root);
+		}
 
 		// 返回二叉搜索树中的元素个数
 		int size() {
@@ -267,6 +270,20 @@ namespace BinarySearchTree {
 					node_queue.push_back(node->right);
 				}
 			}
+		}
+
+		// 以后序的方式进行释放内存，先是left节点，后是right节点，在父节点
+		void destroy(Node *node) {
+			if (nullptr == node) { return; }
+
+			destroy(node->left);
+			destroy(node->right);
+
+			cout << node->key << " ";
+
+			delete node;
+			node = nullptr;
+			--count;
 		}
 	};
 
@@ -351,6 +368,17 @@ namespace BinarySearchTree {
 		// post order: 4 8 6 5 20 10
 		// level orfer: 10 5 20 4 6 8
 	}
+
+	void test_bst_destroy() {
+		BinarySearchTree<int, int> bst = BinarySearchTree<int, int>();
+		bst.insert(10, 1);
+		bst.insert(5, 2);
+		bst.insert(6, 3);
+		bst.insert(20, 4);
+		bst.insert(8, 5);
+		bst.insert(4, 6);
+	}
+
 }
 }
 

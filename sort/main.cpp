@@ -33,5 +33,6 @@ int main()
 
     // DSA::BinarySearchTree::test_for_recursion_effciency();
     // DSA::BinarySearchTree::test_bst_search();
-    DSA::BinarySearchTree::test_bst_traverse();
+    // DSA::BinarySearchTree::test_bst_traverse();
+    DSA::BinarySearchTree::test_bst_destroy();
 }
