@@ -1,0 +1,150 @@
+From 97a7fc0ea16f2b74f78825dad1a6408d4293a218 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Shixiong=2ELiu=20=E5=88=98=E4=B8=96=E9=9B=84?=
+ <635672377@qq.com>
+Date: Sun, 28 Mar 2021 15:31:46 +0800
+Subject: [PATCH] 1.bst add get min and max key function. 2.bst add remove
+ min/max key function
+
+---
+ sort/binary_search_tree.h | 97 +++++++++++++++++++++++++++++++++++++++
+ sort/main.cpp             |  4 +-
+ 2 files changed, 100 insertions(+), 1 deletion(-)
+
+diff --git a/sort/binary_search_tree.h b/sort/binary_search_tree.h
+index 74000b0..2559a75 100644
+--- a/sort/binary_search_tree.h
++++ b/sort/binary_search_tree.h
+@@ -199,6 +199,48 @@ namespace BinarySearchTree {
+ 			cout << node->key << " "; 
+ 		}
+ 
++		// 返回二叉树最小的节点
++		Node* _miniKey(Node* node) {
++			if (nullptr == node->left) {
++				return node;
++			}
++
++			return _miniKey(node->left);
++		}
++
++		// 返回二叉树最大的节点
++		Node* _maxKey(Node* node) {
++			if (nullptr == node->right) {
++				return node;
++			}
++
++			return _maxKey(node->right);
++		}
++
++		Node *_removeMinKey(Node *node) {
++			if (nullptr == node->left) {
++				Node *node_right = node->right;
++				delete node;
++				--count;
++				return node_right;
++			}
++
++			node->left = _removeMinKey(node->left);
++			return node;
++		}
++
++		Node *_removeMaxKey(Node *node) {
++			if (nullptr == node->right) {
++				Node *node_left = node->left;
++				delete node;
++				--count;
++				return node_left;
++			}
++
++			node->right = _removeMaxKey(node->right);
++			return node;
++		}
++
+ 		int count = 0;
+ 		Node *root = nullptr;
+ 
+@@ -285,6 +327,28 @@ namespace BinarySearchTree {
+ 			node = nullptr;
+ 			--count;
+ 		}
++
++
++		Key* miniKey() {
++			if (nullptr == root) { return nullptr; }
++			Node* node = _miniKey(root);
++			return nullptr == node ? nullptr : &node->key;
++		}
++
++		Key* maxKey() {
++			if (nullptr == root) { return nullptr; }
++			Node *node = _maxKey(root);
++
++			return nullptr == node ? nullptr : &node->key;
++		}
++
++		void removeMinKey() {
++			root = _removeMinKey(root);
++		}
++
++		void removeMaxKey() {
++			root = _removeMaxKey(root);
++		}
+ 	};
+ 
+ 	void test_bst_search()
+@@ -379,6 +443,39 @@ namespace BinarySearchTree {
+ 		bst.insert(4, 6);
+ 	}
+ 
++	void test_bst_min_max_key() {
++		BinarySearchTree<int, int> bst = BinarySearchTree<int, int>();
++		bst.insert(10, 1);
++		bst.insert(5, 2);
++		bst.insert(6, 3);
++		bst.insert(20, 4);
++		bst.insert(8, 5);
++		bst.insert(4, 6);
++
++		int* min_key = bst.miniKey();
++		int* max_key = bst.maxKey();
++
++		cout << "bst min key:" << *min_key << endl;
++		cout << "bst max key:" << *max_key << endl;
++	}
++
++	void test_bst_remove_min_max_key()
++	{
++		BinarySearchTree<int, int> bst = BinarySearchTree<int, int>();
++		bst.insert(10, 1);
++		bst.insert(5, 2);
++		bst.insert(6, 3);
++		bst.insert(20, 4);
++		bst.insert(8, 5);
++		bst.insert(4, 6);
++
++		bst.levelOrder();
++		cout << endl;
++		
++		bst.removeMinKey();
++		bst.removeMaxKey();
++	}
++
+ }
+ }
+ 
+diff --git a/sort/main.cpp b/sort/main.cpp
+index 9aa0128..d5f153c 100644
+--- a/sort/main.cpp
++++ b/sort/main.cpp
+@@ -34,5 +34,7 @@ int main()
+     // DSA::BinarySearchTree::test_for_recursion_effciency();
+     // DSA::BinarySearchTree::test_bst_search();
+     // DSA::BinarySearchTree::test_bst_traverse();
+-    DSA::BinarySearchTree::test_bst_destroy();
++    // DSA::BinarySearchTree::test_bst_destroy();
++    // DSA::BinarySearchTree::test_bst_min_max_key();
++    DSA::BinarySearchTree::test_bst_remove_min_max_key();
+ }
+-- 
+2.21.0.windows.1
+

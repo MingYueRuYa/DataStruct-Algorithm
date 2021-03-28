@@ -1,0 +1,10 @@
+diff a/sort/main.cpp b/sort/main.cpp	(rejected hunks)
+@@ -34,5 +34,7 @@ int main()
+     // DSA::BinarySearchTree::test_for_recursion_effciency();
+     // DSA::BinarySearchTree::test_bst_search();
+     // DSA::BinarySearchTree::test_bst_traverse();
+-    DSA::BinarySearchTree::test_bst_destroy();
++    // DSA::BinarySearchTree::test_bst_destroy();
++    // DSA::BinarySearchTree::test_bst_min_max_key();
++    DSA::BinarySearchTree::test_bst_remove_min_max_key();
+ }
