@@ -115,9 +115,16 @@ namespace BinarySearchTree {
 			Node *right;
 
 			Node(Key key, Value value) {
-				this->key = key;
+				this->key	= key;
 				this->value = value;
-				this->left = this->right = nullptr;
+				this->left	= this->right = nullptr;
+			}
+
+			Node(Node *node) {
+				this->key	= node->key;
+				this->value = node->value;
+				this->left	= node->left;
+				this->right = node->right;
 			}
 		};
 
@@ -241,6 +248,113 @@ namespace BinarySearchTree {
 			return node;
 		}
 
+
+		// 删除以node为根节点，其中键值为key的node，递归算法
+		// 返回删除后新的二叉搜索树的根节点
+		Node* _removeKey(Node* node, Key key) {
+			if (nullptr == node) { return nullptr; }
+
+			// left 
+			if (key < node->key) {
+				node->left = _removeKey(node->left, key);
+				return node;
+			}
+			else if (key > node->key) {	// right
+				node->right = _removeKey(node->right, key);
+				return node;
+			}
+			else { // node->key == key
+			 // 如果左节点为空，只需要将右节点返回
+			 // 此时right节点为nullptr，也不要紧
+				if (nullptr == node->left) {
+					Node* right_node = node->right;
+
+					delete node;
+					node = nullptr;
+					--count;
+
+					return right_node;
+				}
+
+				// 如果右节点为空，只需要将左节点返回
+				// 此时left节点为nullptr，也不要紧
+				if (nullptr == node->right) {
+					Node* left_node = node->left;
+					delete node;
+					node = nullptr;
+					--count;
+
+					return left_node;
+				}
+
+				// 接下来要处理的就是有左右节点
+				// 1.要拿到右子树中最小值
+				// 2.将找到的最小值复制一份，再将原来的node删除
+				Node* mini_node = _miniKey(node->right);
+				Node* successor = new Node(*mini_node);
+				count++;
+
+				successor->left = node->left;
+				successor->right = _removeMinKey(node->right);
+
+				delete node;
+				count--;
+
+				return successor;
+			} // if (key < node->key)
+		}
+
+
+		// 删除掉以node为根的二分搜索树中键值为key的节点, 递归算法
+ // 返回删除节点后新的二分搜索树的根
+		Node* remove(Node* node, Key key) {
+
+			if (node == NULL)
+				return NULL;
+
+			if (key < node->key) {
+				node->left = remove(node->left, key);
+				return node;
+			}
+			else if (key > node->key) {
+				node->right = remove(node->right, key);
+				return node;
+			}
+			else {   // key == node->key
+
+				// 待删除节点左子树为空的情况
+				if (node->left == NULL) {
+					Node* rightNode = node->right;
+					delete node;
+					count--;
+					return rightNode;
+				}
+
+				// 待删除节点右子树为空的情况
+				if (node->right == NULL) {
+					Node* leftNode = node->left;
+					delete node;
+					count--;
+					return leftNode;
+				}
+
+				// 待删除节点左右子树均不为空的情况
+
+				// 找到比待删除节点大的最小节点, 即待删除节点右子树的最小节点
+				// 用这个节点顶替待删除节点的位置
+				Node* successor = new Node(_miniKey(node->right));
+				count++;
+
+				successor->right = _removeMinKey(node->right);
+				successor->left = node->left;
+
+				delete node;
+				count--;
+
+				return successor;
+			}
+		}
+
 		int count = 0;
 		Node *root = nullptr;
 
@@ -296,8 +410,13 @@ namespace BinarySearchTree {
 		// 层次遍历
 		// 在进行层次遍历的时候，需要借助队列容器
 		void levelOrder() {
+
+			if (root == NULL) return;
+
+			// 先将root节点加入到队列中
 			deque<Node*> node_queue = {root};
 			while (! node_queue.empty()) {
+				// 此时将队列中的第一个元素弹出来
 				Node* node = node_queue.front();
 				node_queue.pop_front();
 
@@ -349,6 +468,11 @@ namespace BinarySearchTree {
 		void removeMaxKey() {
 			root = _removeMaxKey(root);
 		}
+
+		void removeKey(Key key) {
+			root = _removeKey(root, key);
+		}
+
 	};
 
 	void test_bst_search()
@@ -474,6 +598,25 @@ namespace BinarySearchTree {
 		
 		bst.removeMinKey();
 		bst.removeMaxKey();
+	}
+
+	void test_bst_remove_key()
+	{
+		BinarySearchTree<int, int> bst = BinarySearchTree<int, int>();
+		bst.insert(10, 1);
+		bst.insert(5, 2);
+		bst.insert(6, 3);
+		bst.insert(20, 4);
+		bst.insert(8, 5);
+		bst.insert(4, 6);
+
+		bst.levelOrder();
+		cout << endl;
+
+		bst.removeKey(10);
+		cout << "delete key:10" << endl;
+		bst.levelOrder();
+		cout << endl;
 	}
 
 }

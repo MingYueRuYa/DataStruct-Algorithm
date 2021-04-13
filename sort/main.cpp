@@ -36,5 +36,8 @@ int main()
     // DSA::BinarySearchTree::test_bst_traverse();
     // DSA::BinarySearchTree::test_bst_destroy();
     // DSA::BinarySearchTree::test_bst_min_max_key();
-    DSA::BinarySearchTree::test_bst_remove_min_max_key();
+    // DSA::BinarySearchTree::test_bst_remove_min_max_key();
+    DSA::BinarySearchTree::test_bst_remove_key();
+
+    return 0;
 }
