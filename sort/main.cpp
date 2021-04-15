@@ -29,8 +29,8 @@ int main()
 
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
-    // DSA::Heap::test_index_max_heap();
 
+    DSA::Union::test_uf1();
     // DSA::BinarySearchTree::test_for_recursion_effciency();
     // DSA::BinarySearchTree::test_bst_search();
     // DSA::BinarySearchTree::test_bst_traverse();
