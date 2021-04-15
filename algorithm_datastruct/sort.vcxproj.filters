@@ -35,15 +35,12 @@
     </ClInclude>
     <ClInclude Include="union.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FileOps.h">
+    </ClInclude>    <ClInclude Include="FileOps.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="SequenceST.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
+    </ClInclude>  <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

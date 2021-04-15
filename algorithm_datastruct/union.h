@@ -471,5 +471,3 @@ namespace Union {
 }
 }
 
-
-#endif // union_h
