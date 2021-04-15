@@ -1,8 +1,10 @@
 ﻿#include "pch.h"
+#include "heap.h"
 #include "test_sort.h"
 #include "sorthelper.h"
 #include "homework.h"
-#include "heap.h"
+#include "union.h"
+
 #include <iostream>
 
 using std::cout;
@@ -27,5 +29,7 @@ int main()
 
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
-    DSA::Heap::test_index_max_heap();
+    // DSA::Heap::test_index_max_heap();
+
+    DSA::Union::test_uf1();
 }
