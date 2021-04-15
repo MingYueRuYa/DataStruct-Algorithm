@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "heap.h"
+#include "union.h"
 #include "homework.h"
 #include "test_sort.h"
 #include "sorthelper.h"
@@ -29,15 +30,14 @@ int main()
 
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
-    // DSA::Heap::test_index_max_heap();
 
+    DSA::Union::test_uf(1000000);
     // DSA::BinarySearchTree::test_for_recursion_effciency();
     // DSA::BinarySearchTree::test_bst_search();
     // DSA::BinarySearchTree::test_bst_traverse();
     // DSA::BinarySearchTree::test_bst_destroy();
     // DSA::BinarySearchTree::test_bst_min_max_key();
     // DSA::BinarySearchTree::test_bst_remove_min_max_key();
-    DSA::BinarySearchTree::test_bst_remove_key();
+    // DSA::BinarySearchTree::test_bst_remove_key();
 
-    return 0;
-}
+	return 0;}
