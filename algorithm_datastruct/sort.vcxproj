@@ -159,8 +159,10 @@
     <ClInclude Include="heap.h" />
     <ClInclude Include="homework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ReadGraph.h" />
     <ClInclude Include="SequenceST.h" />
     <ClInclude Include="sorthelper.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="test_sort.h" />
     <ClInclude Include="union.h" />
   </ItemGroup>

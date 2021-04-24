@@ -36,6 +36,12 @@
     <ClInclude Include="union.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadGraph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="header">
