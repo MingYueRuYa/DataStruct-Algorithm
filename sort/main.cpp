@@ -30,6 +30,7 @@ int main()
 
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
+    // DSA::Heap::test_index_max_heap();
 
     DSA::Union::test_uf(1000000);
     // DSA::BinarySearchTree::test_for_recursion_effciency();
@@ -40,4 +41,5 @@ int main()
     // DSA::BinarySearchTree::test_bst_remove_min_max_key();
     // DSA::BinarySearchTree::test_bst_remove_key();
 
-	return 0;}
+	return 0;
+}
