@@ -101,6 +101,53 @@ public:
 			cout << endl;
 		} // for i
 	}
+
+	// 迭代器，统一遍历的接口
+	// 迭代器，传入一个图和一个顶点
+	// 迭代在这个图中和这个顶点相连的所有顶点
+	class GraphIterator {
+	private:
+		SparseGraph &graph_;	// 图的引用
+		int vertex_;				// 顶点
+		int index_;				// 索引
+
+	public:
+		GraphIterator(SparseGraph &graph, int vertex): graph_(graph) {
+			this->graph_ = graph;
+			this->vertex_ = vertex;
+		}
+
+		~GraphIterator() = default;
+
+		// 返回图中graph中与顶点vertex相连接的第一个顶点
+		int begin() {
+
+			index_ = 0;
+
+			if (graph_.data_[vertex_].size()) {
+				return graph_.data_[vertex_][index_];
+			}
+
+			// 若是没有顶点和v相连接，则返回-1
+			return -1;
+		}
+
+		// 返回图中G与顶点vertex相连接的下一个顶点
+		int next() {
+			index_++;
+			if (index_ < graph_.data_[vertex_].size()) {
+				return graph_.data_[vertex_][index_];
+			}
+
+			return -1;
+		}
+
+		// 查看是否已经迭代完与图G中与顶点vertex相连接的所有顶点
+		bool end() {
+			return index_ >= graph_.data_[vertex_].size();
+		}
+
+	};
 };
 
 // 稠密图 - 邻接矩阵
@@ -128,8 +175,8 @@ public:
 
 	// 向图中添加一个边
 	void addEdge(int left_vertex, int right_vertex) {
-		assert(left_vertex > 0 && left_vertex < vertex_count_);
-		assert(right_vertex > 0 && right_vertex < vertex_count_);
+		assert(left_vertex >= 0 && left_vertex < vertex_count_);
+		assert(right_vertex >= 0 && right_vertex < vertex_count_);
 
 		if (hasEdge(left_vertex, right_vertex)) { return; }
 
@@ -145,8 +192,8 @@ public:
 
 	// 判断两个节点是否相连
 	bool hasEdge(int left_vertex, int right_vertex) {
-		assert(left_vertex > 0 && left_vertex < vertex_count_);
-		assert(right_vertex > 0 && right_vertex < vertex_count_);
+		assert(left_vertex >= 0 && left_vertex < vertex_count_);
+		assert(right_vertex >= 0 && right_vertex < vertex_count_);
 
 
 		return data_[left_vertex][right_vertex];	
@@ -162,6 +209,52 @@ public:
 			cout << endl;
 		} // for i
 	}
+
+	// 迭代器，统一遍历的接口
+	// 迭代器，传入一个图和一个顶点
+	// 迭代在这个图中和这个顶点相连的所有顶点
+	class GraphIterator {
+	private:
+		DenseGraph &graph_;	// 图的引用
+		int vertex_;				// 顶点
+		int index_;				// 索引
+
+	public:
+		GraphIterator(DenseGraph &graph, int vertex): graph_(graph) {
+			this->graph_	= graph;
+			this->vertex_	= vertex;
+			this->index_	= -1;	// 索引从-1开始，因为每次遍历都需要调用一次next
+		}
+
+		~GraphIterator() = default;
+
+		// 返回图中graph中与顶点vertex相连接的第一个顶点
+		int begin() {
+
+			index_ = -1;
+
+			return next();
+		}
+
+		// 返回图中G与顶点vertex相连接的下一个顶点
+		int next() {
+
+			// 从当前index_开始向后搜索，直到找到一个graph_.data_[vertex_][index]为true
+			for (index_ += 1; index_ < graph_.data_[vertex_].size(); ++index_) {
+				if (graph_.data_[vertex_][index_]) {
+					return index_;
+				}
+			} // index_
+
+			return -1;
+		}
+
+		// 查看是否已经迭代完与图G中与顶点vertex相连接的所有顶点
+		bool end() {
+			return index_ >= graph_.GetVertexCount();
+		}
+	};
+
 };
 
 	void test_graph() {
@@ -171,11 +264,54 @@ public:
 		ReadGraph<SparseGraph> read_graph_1(sparse_graph, file_name);
 		cout << "test G1 in Sparse Graph:" << endl;
 		sparse_graph.show();
+
+		cout << endl;
+		
+		DenseGraph dense_graph(13, false);
+		ReadGraph<DenseGraph> read_graph_2(dense_graph, file_name);
+		cout << "test G1 in Dense Graph:" << endl;
+		dense_graph.show();
 	}
 
-}
-}
+	void test_graph_iterator() {
+		// 测试sparse,dense graph
+		string file_name = "../test_files/testG1.txt";
+		SparseGraph sparse_graph(13, false);
+		ReadGraph<SparseGraph> read_graph_1(sparse_graph, file_name);
+		cout << "test G1 in Sparse Graph:" << endl;
+		sparse_graph.show();
 
+		for (size_t vertex = 0; vertex < 13; vertex++) {
+			cout << vertex << " : ";
+
+			SparseGraph::GraphIterator iterator(sparse_graph, vertex);
+			for (int w = iterator.begin(); !iterator.end(); w = iterator.next()) {
+				cout << w << " ";
+			}
+
+			cout << endl;
+		}
+
+		cout << endl;
+		
+		DenseGraph dense_graph(13, false);
+		ReadGraph<DenseGraph> read_graph_2(dense_graph, file_name);
+		cout << "test G1 in Dense Graph:" << endl;
+		dense_graph.show();
+		cout << endl;
+
+		for (size_t vertex = 0; vertex < 13; vertex++) {
+			cout << vertex << " : ";
+
+			DenseGraph::GraphIterator iterator(dense_graph, vertex);
+			for (int w = iterator.begin(); !iterator.end(); w = iterator.next()) {
+				cout << w << " ";
+			}
+
+			cout << endl;
+		}
+	}
+}
+}
 
 #endif // SparseGraph_
-

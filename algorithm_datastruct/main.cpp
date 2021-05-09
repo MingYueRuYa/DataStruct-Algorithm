@@ -44,7 +44,8 @@ int main()
     // DSA::BinarySearchTree::test_bst_remove_min_max_key();
     // DSA::BinarySearchTree::test_bst_remove_key();
 
-    DSA::Graph::test_graph();
+    // DSA::Graph::test_graph();
+    DSA::Graph::test_graph_iterator();
 
 	return 0;
 }
