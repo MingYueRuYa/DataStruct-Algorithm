@@ -318,6 +318,18 @@ namespace Union {
 	//	  /
 	//   5
 	// 
+	// 第二种：路径压缩的方案
+	//			 1								   1
+	//			/							   / /	\	\
+	//		   2							  2	 3	 4	 5
+	//		  /									 
+	//		 3									
+	//		/
+	//	   4
+	//	  /
+	//   5
+	// 
+
 	class UnionFind5 : public UnionFind
 	{
 	public:
@@ -346,14 +358,22 @@ namespace Union {
 
 			// 根节点的特征p = _parent[p]
 			// 隔一个父节点，设置父节点
-			while (p != _parent[p]) {
-				// 设置p的父节点为为p的第二个父节点
-				// 如上图所示：设置5的父节点为3
-				_parent[p] = _parent[_parent[p]];
-				p = _parent[p];
+			//while (p != _parent[p]) {
+			//	// 设置p的父节点为为p的第二个父节点
+			//	// 如上图所示：设置5的父节点为3
+			//	_parent[p] = _parent[_parent[p]];
+			//	p = _parent[p];
+			//}
+
+			//return p;
+
+			// 采取这种做法，实际的效率并没有第二种的高，因为采用递归调用，函数的开销较大
+			// 第二种路径压缩的方案：
+			if (p != _parent[p]) {
+				_parent[p] = find(_parent[p]);
 			}
 
-			return p;
+			return _parent[p];
 		}
 
 		// 查看p，q是否属于一个集合里面
