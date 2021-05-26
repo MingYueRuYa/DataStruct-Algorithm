@@ -257,6 +257,57 @@ public:
 
 };
 
+template <typename Graph>
+class Component {
+private:
+	Graph graph_;	// 图的引用
+	bool *visited_ = nullptr;	// 记录DFS的过程中是否被访问
+	int ccount_	   = 0;	// 记录连通分量个数
+	int *id_	   = nullptr;		// 每个节点所对应的连通分量标记
+
+	void DFS(int vertex) {
+		// 设置当前的点已经遍历过
+		visited_[vertex] = true;
+		// 设置当前的点属于哪个图
+		id_[vertex] = ccount_;
+
+		//遍历当前的点与之相关联的点
+		typename Graph::GraphIterator itr(graph_, vertex);
+		for (int tmp_vertex = itr.begin(); !itr.end(); tmp_vertex = itr.next()) {
+			if (visited_[tmp_vertex]) { continue; }
+
+			DFS(tmp_vertex);
+		}
+	}
+
+public:
+	// 构造函数，求出无权图的连通分量
+	Component(Graph	&graph) : graph_(graph) {
+		visited_	= new bool[graph_.GetVertexCount()];
+		id_			= new int[graph_.GetVertexCount()];
+
+		ccount_ = 0;
+
+		for (int i = 0; i < graph_.GetVertexCount(); ++i) {
+			visited_[i] = false;
+			id_[i]		= -1;
+		} // for i
+
+		// 注意这里使用了i作为vertex的点，就需要图中的实际的点也是从0开始
+		for (int i = 0; i < graph_.GetVertexCount(); ++i) {
+			if (visited_[i]) { continue; }
+			DFS(i);
+			// 如果发现还有点没有遍历到，就说明存在2个以上的连通分量
+			ccount_++;
+		}
+
+	}
+
+	int GetCount() { return ccount_; }
+
+};
+
+
 	void test_graph() {
 		// 测试sparse,dense graph
 		string file_name = "../test_files/testG1.txt";
@@ -310,6 +361,25 @@ public:
 
 			cout << endl;
 		}
+	}
+
+	void test_graph_dfs() {
+		string file_name = "../test_files/testG1.txt";
+		SparseGraph sparse_graph(13, false);
+		ReadGraph<SparseGraph> read_graph_1(sparse_graph, file_name);
+		cout << "test G1 in Sparse Graph:" << endl;
+
+		Component<SparseGraph> sparse_component(sparse_graph);
+		cout <<  "graph count:" << sparse_component.GetCount() << endl;
+
+		file_name = "../test_files/testG2.txt";
+		DenseGraph dense_graph(6, false);
+		ReadGraph<DenseGraph> read_graph_2(dense_graph, file_name);
+		cout << "test G2 in Dense Graph:" << endl;
+
+		Component<DenseGraph> dense_component(dense_graph);
+		cout <<  "graph count:" << dense_component.GetCount() << endl;
+		
 	}
 }
 }
