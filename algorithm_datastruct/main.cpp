@@ -48,7 +48,7 @@ int main()
 
     // DSA::Graph::test_graph();
     // DSA::Graph::test_graph_iterator();
-    DSA::Graph::test_graph();
+    DSA::Graph::test_graph_dfs();
 
 	return 0;
 }
