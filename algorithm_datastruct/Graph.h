@@ -8,6 +8,7 @@
 #ifndef SparseGraph_
 #define SparseGraph_
 
+#include <stack>
 #include <vector>
 #include <cassert>
 #include <string>
@@ -18,6 +19,7 @@
 using std::cout;
 using std::endl;
 using std::vector;
+using std::stack;
 using std::string;
 
 namespace DSA {
@@ -303,7 +305,101 @@ public:
 
 	}
 
+	~Component() {
+		delete[] visited_;
+		delete[] id_;
+	}
+
 	int GetCount() { return ccount_; }
+
+};
+
+template <typename Graph>
+class Path {
+private:
+	Graph &graph_;
+	int vertex_;
+	bool *visited_ = nullptr;	// 表示点是否访问过
+	int *from_     = nullptr;	// 记录路径，from[i]表示查找路径的之前的一个节点
+								// from[2] = 1 from[3] = 2 from[4] = 3
+
+	void DFS(int vertex) {
+		visited_[vertex] = true;
+		typename Graph::GraphIterator itr(graph_, vertex);
+		for (int temp_vertex = itr.begin(); !itr.end(); temp_vertex = itr.next()) {
+			if (visited_[temp_vertex]) { continue; }
+
+			// 注意这里的复制操作
+			// 1	2	3	4
+			// -1	1	2	3
+			from_[temp_vertex] = vertex;
+			DFS(temp_vertex);
+		}
+	}
+
+public:
+	Path(Graph &graph, int vertex) :graph_(graph), vertex_(vertex) {
+		visited_ = new bool[graph_.GetVertexCount()];
+		from_	 = new int[graph_.GetVertexCount()];
+
+		for (int i = 0; i < graph_.GetVertexCount(); ++i) {
+			visited_[i] = false;
+			// 先初始化为为-1
+			from_[i]	= -1;
+		}
+
+		DFS(vertex_);
+	}
+
+	~Path() {
+		delete[] visited_;
+		delete[] from_;
+	}
+
+	// 如果当前节点已经访问过了，则表示存在路径
+	bool HasPath(int vertex) {
+		return visited_[vertex];
+	}
+
+	// 返回路径
+	void GetPath(int vertex, vector<int> &pathVec) {
+		assert(HasPath(vertex));
+
+		stack<int> pathstack;
+		int temp_vertex = vertex;
+		// 以逆序的方式，回溯到source 顶点
+		// 比如刚开始的时候：1 2 3 4 5
+		// 此时以逆序的方式加入到stack中 5 4 3 2 1 
+		// 然后在倒叙出来就是1 2 3 4 5 
+		while (-1 != temp_vertex) {
+			pathstack.push(temp_vertex);
+			temp_vertex = from_[temp_vertex];
+		}
+
+		pathVec.clear();
+
+		while (!pathstack.empty()) {
+			pathVec.push_back(pathstack.top());
+			pathstack.pop();
+		}
+	}
+
+	void ShowPath(int vertex) {
+
+		assert(HasPath(vertex));
+
+		vector<int> pathVec;
+		GetPath(vertex, pathVec);
+
+		for (int i = 0 ; i < pathVec.size(); ++i) {
+			cout << pathVec[i];
+			if (i == pathVec.size()-1) {
+				cout << endl;
+			} else {
+				cout << " --> ";
+			}
+		}
+	}
 
 };
 
@@ -380,6 +476,17 @@ public:
 		Component<DenseGraph> dense_component(dense_graph);
 		cout <<  "graph count:" << dense_component.GetCount() << endl;
 		
+	}
+
+	void test_graph_show_path() {
+		string file_name = "../test_files/testG2.txt";
+		DenseGraph dense_graph(6, false);
+		ReadGraph<DenseGraph> read_graph_2(dense_graph, file_name);
+		cout << "test G2 in Dense Graph:" << endl;
+
+		Path<DenseGraph> dense_path(dense_graph, 0);
+		dense_path.ShowPath(6);
+
 	}
 }
 }
