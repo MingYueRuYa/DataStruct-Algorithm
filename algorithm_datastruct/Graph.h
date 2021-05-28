@@ -332,6 +332,7 @@ private:
 			// 注意这里的复制操作
 			// 1	2	3	4
 			// -1	1	2	3
+			// 这个节点从上vertex过来的，可以理解为temp_vertex父亲是vertex
 			from_[temp_vertex] = vertex;
 			DFS(temp_vertex);
 		}
