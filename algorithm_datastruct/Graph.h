@@ -404,6 +404,13 @@ public:
 
 };
 
+// BFS 广度优先遍历
+class ShortPath {
+
+};
+
+
+
 
 	void test_graph() {
 		// 测试sparse,dense graph
