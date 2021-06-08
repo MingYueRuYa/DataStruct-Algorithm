@@ -9,9 +9,11 @@
 #define SparseGraph_
 
 #include <stack>
+#include <queue>
 #include <vector>
-#include <cassert>
 #include <string>
+#include <memory>
+#include <cassert>
 #include <iostream>
 
 #include "ReadGraph.h"
@@ -21,6 +23,8 @@ using std::endl;
 using std::vector;
 using std::stack;
 using std::string;
+using std::shared_ptr;
+using std::make_shared;
 
 namespace DSA {
 namespace Graph {
@@ -319,8 +323,8 @@ class Path {
 private:
 	Graph &graph_;
 	int vertex_;
-	bool *visited_ = nullptr;	// 表示点是否访问过
-	int *from_     = nullptr;	// 记录路径，from[i]表示查找路径的之前的一个节点
+	shared_ptr<bool []> visited_;	// 记录DFS过程中节点是否被访问过
+	shared_ptr<int []> from_;	// 记录路径，from[i]表示查找路径的之前的一个节点
 								// from[2] = 1 from[3] = 2 from[4] = 3
 
 	void DFS(int vertex) {
@@ -340,8 +344,8 @@ private:
 
 public:
 	Path(Graph &graph, int vertex) :graph_(graph), vertex_(vertex) {
-		visited_ = new bool[graph_.GetVertexCount()];
-		from_	 = new int[graph_.GetVertexCount()];
+		visited_ = shared_ptr<bool []>(new bool[graph_.GetVertexCount()]);
+		from_	 = shared_ptr<int []>(new int[graph_.GetVertexCount()]);
 
 		for (int i = 0; i < graph_.GetVertexCount(); ++i) {
 			visited_[i] = false;
@@ -352,10 +356,7 @@ public:
 		DFS(vertex_);
 	}
 
-	~Path() {
-		delete[] visited_;
-		delete[] from_;
-	}
+	~Path() {}
 
 	// 如果当前节点已经访问过了，则表示存在路径
 	bool HasPath(int vertex) {
@@ -405,12 +406,110 @@ public:
 };
 
 // BFS 广度优先遍历
-class ShortPath {
+// 寻找无向图的最短路径:本质和树的层序遍历思想一致
+template <typename Graph>
+class ShortestPath {
+private:
+	Graph &graph_;	// 图的引用
+	int start_;		// 起始点
+	shared_ptr<bool []> visited_;	// 记录BFS过程中节点是否被访问过
+	shared_ptr<int []> from_;		// 记录路径，from[i]表示查找路径i的上一个节点
+	shared_ptr<int []> ord_;		// 记录路径中节点的次序.ord_[i]表示i节点在路径中的次序
+
+public:
+	// 构造函数，寻找无权图graph从S点到其他点的最短路径
+	ShortestPath(Graph &graph, int start): graph_(graph), start_(start){
+		assert(start_ >= 0 && start_ < graph.GetVertexCount());
+
+		int vertex_count = graph.GetVertexCount();
+		// visited_	= make_shared<bool []>(vertex_count);
+		visited_	= shared_ptr<bool []>(new bool[vertex_count]());
+		from_	= shared_ptr<int []>(new int[vertex_count]());
+		ord_	= shared_ptr<int []>(new int[vertex_count]());
+
+		for (int i = 0; i < vertex_count ; ++i) {
+			visited_[i] = false;
+			from_[i] = -1;
+			ord_[i] = -1;
+		}
+
+		std::queue<int> graph_queue;
+		graph_queue.push(start_);
+
+		visited_[start_] = true;
+		ord_[start_] = 0;
+
+		while (! graph_queue.empty()) {
+			int vertex = graph_queue.front();
+			graph_queue.pop();
+
+			typename Graph::GraphIterator itr(graph_, vertex);
+			for (int temp_vertex = itr.begin(); !itr.end(); temp_vertex = itr.next()) {
+				// 如果已经访问过的点，则不需要在访问
+				if (visited_[temp_vertex]) { continue; }
+
+				graph_queue.push(temp_vertex);
+
+				// 设置已经访问过
+				visited_[temp_vertex] = true;
+				// 路径+1
+				ord_[temp_vertex] = ord_[vertex] + 1;
+				from_[temp_vertex] = vertex;
+
+			} // for temp_vertex
+		} // while graph_queue.emtpy
+	}
+
+	~ShortestPath() {}
+
+	// 从start到vertex是否有路径
+	bool HasPath(int vertex)
+	{
+		return visited_[vertex];
+	}
+
+	void Path(int end, vector<int> &pathVec) {
+		assert(end > 0 && graph_.GetVertexCount());	
+
+		stack<int> graph_stack;
+		// 从from数组逆向查找从s到w的路径，存放到栈中
+		int temp_end = end;
+		while (temp_end != -1) {
+			graph_stack.push(temp_end);	
+			temp_end = from_[temp_end];
+		}
+
+		// 从栈中依次取出元素，获得顺序的从s到w的路径
+		pathVec.clear();
+
+		while (!graph_stack.empty()) {
+			pathVec.push_back(graph_stack.top());
+			graph_stack.pop();
+		}
+
+	}
+
+	void ShowPath(int vertex) {
+		assert(HasPath(vertex));
+		assert(vertex > 0 && graph_.GetVertexCount());
+
+		vector<int> path_vec;
+		Path(vertex, path_vec);
+		for (int i = 0; i < path_vec.size(); ++i) {
+			cout << path_vec[i];	
+			if (i == path_vec.size()-1) { cout << endl; }
+			else { cout << "--> "; }
+		} // for i
+	}
+
+	// 获取最短路径的长度
+	int Length(int vertex) {
+		assert(vertex > 0 && graph_.GetVertexCount());
+
+		return ord_[vertex];
+	}
 
 };
-
-
-
 
 	void test_graph() {
 		// 测试sparse,dense graph
@@ -493,8 +592,45 @@ class ShortPath {
 		cout << "test G2 in Dense Graph:" << endl;
 
 		Path<DenseGraph> dense_path(dense_graph, 0);
+		// 节点6不存在
 		dense_path.ShowPath(6);
 
+	}
+
+	// 测试无权图最短路径算法
+	void test_shortest_path_graph() {
+		string file_name = "../test_files/testG2.txt";
+		SparseGraph sparse_graph(6, false);
+		ReadGraph<SparseGraph> read_graph_2(sparse_graph, file_name);
+		cout << "test G2 in Sparse Graph:" << endl;
+		sparse_graph.show();
+
+		// 比较使用深度优先遍历和广度优先遍历获得路径的不同
+		// 广度优先遍历获得的是无权图的最短路径
+		Path<SparseGraph> dfs(sparse_graph, 0);
+		cout << "DFS : ";
+		dfs.ShowPath(5);
+
+		ShortestPath<SparseGraph> bfs(sparse_graph, 0);
+		cout << "BFS : ";
+		bfs.ShowPath(5);
+		cout << "BFS shortest length: " << bfs.Length(5) << endl;
+
+		// 测试testG1文件
+		file_name = "../test_files/testG1.txt";
+		SparseGraph g2 = SparseGraph(13, false);
+		ReadGraph<SparseGraph> readGraph2(g2, file_name);
+		g2.show();
+
+		// 比较使用深度优先遍历和广度优先遍历获得路径的不同
+		// 广度优先遍历获得的是无权图的最短路径
+		Path<SparseGraph> dfs2(g2, 0);
+		cout << "DFS : ";
+		dfs2.ShowPath(3);
+
+		ShortestPath<SparseGraph> bfs2(g2, 0);
+		cout << "BFS : ";
+		bfs2.ShowPath(3);
 	}
 }
 }
