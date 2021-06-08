@@ -47,7 +47,8 @@ int main()
     // DSA::Graph::test_graph();
     // DSA::Graph::test_graph_iterator();
     // DSA::Graph::test_graph_dfs();
-    DSA::Graph::test_graph_show_path();
+    // DSA::Graph::test_graph_show_path();
+    DSA::Graph::test_shortest_path_graph();
 
 	return 0;
 }
