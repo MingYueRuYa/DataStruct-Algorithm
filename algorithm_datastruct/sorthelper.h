@@ -21,8 +21,8 @@ namespace SortHelper{
         S_End
     };
 
-// Ã°ÅİÅÅĞòËã·¨
-// Á½Á½±È½Ï£¬Èç¹ûÓöµ½½ÏĞ¡Öµ£¬¾Í¶Ô»»
+// å†’æ³¡æ’åºç®—æ³•
+// ä¸¤ä¸¤æ¯”è¾ƒï¼Œå¦‚æœé‡åˆ°è¾ƒå°å€¼ï¼Œå°±å¯¹æ¢
 template <typename T>
 void BubbleSort(T arr[], int size)
 {
@@ -35,7 +35,7 @@ void BubbleSort(T arr[], int size)
     } // for i
 }
 
-// Ë¼Â·£ºÃ¿´ÎÑ­»·¶¼ÊÇÕÒµ½Ò»¸ö×îĞ¡Öµ£¬ÔÚ²åÈëµ½ºÏÊÊµÄÎ»ÖÃÖĞ
+// æ€è·¯ï¼šæ¯æ¬¡å¾ªç¯éƒ½æ˜¯æ‰¾åˆ°ä¸€ä¸ªæœ€å°å€¼ï¼Œåœ¨æ’å…¥åˆ°åˆé€‚çš„ä½ç½®ä¸­
 template <typename T>
 void SelectionSort(T arr[], int size)
 {
@@ -44,7 +44,7 @@ void SelectionSort(T arr[], int size)
     int min_index = 0;
 	for (int i = 0; i < size; ++i) {
         min_index = i;
-        // ÔÚ[i, size)Çø¼äÄÚÕÒµ½×îĞ¡Öµ
+        // åœ¨[i, size)åŒºé—´å†…æ‰¾åˆ°æœ€å°å€¼
         for (int j = i + 1; j < size; ++j) {
             if (arr[min_index] > arr[j]) { 
                 min_index = j;
@@ -55,16 +55,16 @@ void SelectionSort(T arr[], int size)
 	}
 }
 
-// ½«Êı×é¿´ÎªÁ½¸ö²¿·Ö£¬Ò»²¿·ÖÊÇÅÅºÃĞòµÄ£¬Ò»²¿·ÖÊÇÎ´ÅÅĞòµÄ¡£
-// ½«Î´ÅÅĞòµÄ²¿·Ö£¬Ò»¸ö¸öµÄÓëÅÅºÃĞòµÄ²¿·Ö½øĞĞ±È½Ï£¬Èç¹ûÊÇĞ¡ÓÚÔò¶Ô»»£¬·ñÔò¾ÍÖ±½Ó½áÊø
-// insert ÅÅĞòµÄÓÅÊÆ£ºÔÚÅÅĞòµÄÖµ£¬ÔÚÒ»¶¨·¶Î§ÄÚÇÒ´óĞ¡´æÔÚ·Ö²¼µÄ²»ÊÇºÜËæ»úµÄÊ±ºò
-// ÔÚ½üºõÓĞĞòµÄÌõ¼ş£¬insertÅÅĞòµÄĞ§ÂÊ·Ç³£¸ß
+// å°†æ•°ç»„çœ‹ä¸ºä¸¤ä¸ªéƒ¨åˆ†ï¼Œä¸€éƒ¨åˆ†æ˜¯æ’å¥½åºçš„ï¼Œä¸€éƒ¨åˆ†æ˜¯æœªæ’åºçš„ã€‚
+// å°†æœªæ’åºçš„éƒ¨åˆ†ï¼Œä¸€ä¸ªä¸ªçš„ä¸æ’å¥½åºçš„éƒ¨åˆ†è¿›è¡Œæ¯”è¾ƒï¼Œå¦‚æœæ˜¯å°äºåˆ™å¯¹æ¢ï¼Œå¦åˆ™å°±ç›´æ¥ç»“æŸ
+// insert æ’åºçš„ä¼˜åŠ¿ï¼šåœ¨æ’åºçš„å€¼ï¼Œåœ¨ä¸€å®šèŒƒå›´å†…ä¸”å¤§å°å­˜åœ¨åˆ†å¸ƒçš„ä¸æ˜¯å¾ˆéšæœºçš„æ—¶å€™
+// åœ¨è¿‘ä¹æœ‰åºçš„æ¡ä»¶ï¼Œinsertæ’åºçš„æ•ˆç‡éå¸¸é«˜
 template <typename T>
 void InsertSort(T arr[], int size)
 {
-    // Ä¬ÈÏµÚÒ»¸öÔªËØÊÇÅÅºÃĞòµÄ
+    // é»˜è®¤ç¬¬ä¸€ä¸ªå…ƒç´ æ˜¯æ’å¥½åºçš„
 
-    // µÚÒ»°æ£ºËã·¨
+    // ç¬¬ä¸€ç‰ˆï¼šç®—æ³•
     /*
     for (int i = 1; i < size; ++i) {
         for (int j = i; j > 0 && arr[j] < arr[j-1]; --j) {
@@ -73,31 +73,31 @@ void InsertSort(T arr[], int size)
     }
     */
 
-    // µÚ¶ş°æ£ºÓÅ»¯Ëã·¨£¬ÓÅ»¯µÄË¼Â·¾ÍÊÇ¼õÉÙÖµµÃ½»»»£¬²ÉÓÃ¸´ÖÆ²Ù×÷¡£
-    // ¾­¹ıÕâÑùµÄÓÅ»¯£¬Ê±¼äĞ§ÂÊ¾Í±Èselect sort¿ì£¬Í¬Ê±insert sort¿ÉÒÔÌáÇ°ÖÕÖ¹Ñ­»·
+    // ç¬¬äºŒç‰ˆï¼šä¼˜åŒ–ç®—æ³•ï¼Œä¼˜åŒ–çš„æ€è·¯å°±æ˜¯å‡å°‘å€¼å¾—äº¤æ¢ï¼Œé‡‡ç”¨å¤åˆ¶æ“ä½œã€‚
+    // ç»è¿‡è¿™æ ·çš„ä¼˜åŒ–ï¼Œæ—¶é—´æ•ˆç‡å°±æ¯”select sortå¿«ï¼ŒåŒæ—¶insert sortå¯ä»¥æå‰ç»ˆæ­¢å¾ªç¯
 	for (int i = 1; i < size; ++i) {
         T insert_value = arr[i];
-        // j ±£Áôinsert_valueÓ¦¸Ã²åÈëµÄÎ»ÖÃ
+        // j ä¿ç•™insert_valueåº”è¯¥æ’å…¥çš„ä½ç½®
         int j = i;
         for (; j > 0 && arr[j-1] > insert_value ; --j) {
             // std::swap(arr[j], arr[j-1]);
-            // ÈÃºóÃæµÄÖµ£¬°ÑÇ°ÃæµÄÖµ²»¶ÏµØ¶î¸²¸Ç
+            // è®©åé¢çš„å€¼ï¼ŒæŠŠå‰é¢çš„å€¼ä¸æ–­åœ°é¢è¦†ç›–
             arr[j] = arr[j-1];
         }
-        // ×îÖÕ·µ»ØµÄ¾ÍÊÇÓ¦¸Ã²åinsert_valueÓ¦¸ÃĞèÒª²åÈëµÄÎ»ÖÃ
+        // æœ€ç»ˆè¿”å›çš„å°±æ˜¯åº”è¯¥æ’insert_valueåº”è¯¥éœ€è¦æ’å…¥çš„ä½ç½®
         arr[j] = insert_value;
 	}
 }
 
-// Çø¼ä£º[left, right]
+// åŒºé—´ï¼š[left, right]
 template <typename T>
 void InsertSort(T arr[], int left, int right)
 {
     for (int i = left+1; i <= right; ++i) {
         T insert_value = arr[i];
         int j = i;
-        // 1.j ²»ÄÜ>= left£¬ÒòÎªj-1¿ÉÄÜ»á³¬³öË÷ÒıÎ»ÖÃ
-        // 2.arr[j-1]ÊÇÒòÎªarr[j]¾ÍÊÇinsert_vlaue×Ô¼º²»ĞèÒªÔÙºÍ×Ô¼º±È½Ï
+        // 1.j ä¸èƒ½>= leftï¼Œå› ä¸ºj-1å¯èƒ½ä¼šè¶…å‡ºç´¢å¼•ä½ç½®
+        // 2.arr[j-1]æ˜¯å› ä¸ºarr[j]å°±æ˜¯insert_vlaueè‡ªå·±ä¸éœ€è¦å†å’Œè‡ªå·±æ¯”è¾ƒ
         for (; j > left && arr[j-1] > insert_value; --j) {
                 arr[j] = arr[j-1];
         }
@@ -118,11 +118,11 @@ template<typename T>
 void PrintArray(T arr, int size, int printnums)
 {
     int temp_print_size = size;
-    // 0±íÊ¾È«²¿
+    // 0è¡¨ç¤ºå…¨éƒ¨
     if (0 != printnums) {
         temp_print_size = printnums;
     } else if (printnums < 0) {
-        // Ğ¡ÓÚ0±íÊ¾´ÓºóÍùÇ°´òÓ¡
+        // å°äº0è¡¨ç¤ºä»åå¾€å‰æ‰“å°
         temp_print_size = printnums;
     }
 
@@ -139,8 +139,8 @@ void PrintArray(T arr, int size, int printnums)
     cout << endl;
 }
 
-// Ëæ»úÉú³ÉÊı×é£¬Ëæ»úÊıÎª[left, right)
-// Õâ¸öº¯ÊıÔÚÖØ¸´µ÷ÓÃµÄÊ±ºò£¬Éú³ÉµÄËæ»úÊı¿ÉÄÜÊÇÒ»ÑùµÄ¡£
+// éšæœºç”Ÿæˆæ•°ç»„ï¼Œéšæœºæ•°ä¸º[left, right)
+// è¿™ä¸ªå‡½æ•°åœ¨é‡å¤è°ƒç”¨çš„æ—¶å€™ï¼Œç”Ÿæˆçš„éšæœºæ•°å¯èƒ½æ˜¯ä¸€æ ·çš„ã€‚
 int *GenerateRandomArray(size_t size, int left, int right)
 {
     assert(left <= right);
@@ -156,7 +156,7 @@ int *GenerateRandomArray(size_t size, int left, int right)
     return arr;
 }
 
-// ¿ÉÖØ¸´µ÷ÓÃµÄÉú³ÉËæ»úÊı£¬µ«ÊÇĞèÒªµ÷ÓÃÕßÖ÷¶¯ÉèÖÃËæ»úÊıµÄÖÖ×Ó
+// å¯é‡å¤è°ƒç”¨çš„ç”Ÿæˆéšæœºæ•°ï¼Œä½†æ˜¯éœ€è¦è°ƒç”¨è€…ä¸»åŠ¨è®¾ç½®éšæœºæ•°çš„ç§å­
 int *GenerateRandomArray2(size_t size, int left, int right)
 {
     assert(left <= right);
@@ -170,7 +170,7 @@ int *GenerateRandomArray2(size_t size, int left, int right)
     return arr;
 }
 
-// ÅĞ¶ÏÊı×éÊÇ·ñÊÇÓĞĞòµÄ
+// åˆ¤æ–­æ•°ç»„æ˜¯å¦æ˜¯æœ‰åºçš„
 template <typename T>
 bool IsSorted(T arr[], size_t size)
 {
@@ -181,12 +181,12 @@ bool IsSorted(T arr[], size_t size)
     return true;
 }
 
-// copyÒ»¸öÊı×éµ½ÁíÍâÒ»¸öÊı×éÖĞ
+// copyä¸€ä¸ªæ•°ç»„åˆ°å¦å¤–ä¸€ä¸ªæ•°ç»„ä¸­
 int *CopyArr(int *source, size_t size)
 {
     int *dest = new int[size];
 
-    // Ê¹ÓÃC++µÄcopyËã·¨
+    // ä½¿ç”¨C++çš„copyç®—æ³•
     for (int i = 0; i < size; ++i) {
         dest[i] = source[i];
     }
@@ -194,13 +194,13 @@ int *CopyArr(int *source, size_t size)
     return dest;
 }
 
-// Éú³ÉÒ»¸ö½üºõÓĞĞòµÄÊı×é
-// swap_times¶¨ÒåÁËÊı×éµÄÎŞĞò³Ì¶È
-// swap_times = 0 Êı×é¾ÍÊÇÓĞĞòµÄ
-// swap_timesÔ½´ó£¬·µ»ØµÄÊı×éÔ½ÎŞĞò
+// ç”Ÿæˆä¸€ä¸ªè¿‘ä¹æœ‰åºçš„æ•°ç»„
+// swap_timeså®šä¹‰äº†æ•°ç»„çš„æ— åºç¨‹åº¦
+// swap_times = 0 æ•°ç»„å°±æ˜¯æœ‰åºçš„
+// swap_timesè¶Šå¤§ï¼Œè¿”å›çš„æ•°ç»„è¶Šæ— åº
 int *GenerateNearlyOrderArray(size_t size, int swap_times)
 {
-    // 1.ÏÈÉú³ÉÒ»¸öÓĞĞòµÄÊı×é
+    // 1.å…ˆç”Ÿæˆä¸€ä¸ªæœ‰åºçš„æ•°ç»„
     int *arr = new int[size];
 
     for (int i = 0; i < size; ++i) {
@@ -238,15 +238,15 @@ namespace MergeSortHelper
     template <typename T>
     void _Merge(T arr[], size_t left, size_t middle, size_t right)
     {
-        // ĞèÒª´¦ÀíËÄÖÖÇé¿ö
-        // 1.left Õâ±ßÒÑ¾­´¦ÀíÍê
-        // 2.right Õâ±ßÒÑ¾­´¦ÀíÍê
+        // éœ€è¦å¤„ç†å››ç§æƒ…å†µ
+        // 1.left è¿™è¾¹å·²ç»å¤„ç†å®Œ
+        // 2.right è¿™è¾¹å·²ç»å¤„ç†å®Œ
         // 3.new_arr[left_bak-left] > arr[middle_bak-left]
         // 4.new_arr[left_bak-left] < arr[middle_bak-left]
 
         // notice:
-        // 1.ÔÚ´¦ÀíµÄÊ±ºò£¬Òª°´ÕÕÉÏÃæµÄ1,2,3,4µÄË³Ğò½øĞĞ´¦Àí
-        // 2.ÔÚ½øĞĞÊı¾İ±È½ÏµÄ£¬²»ÄÜÊ¹ÓÃÔ­À´µÄarr½øĞĞ±È½Ï£¬ÒòÎªÔÚ´¦Àí¹ı³ÌÖĞarrµÄÖµÊÇ±ä»¯µÄ.
+        // 1.åœ¨å¤„ç†çš„æ—¶å€™ï¼Œè¦æŒ‰ç…§ä¸Šé¢çš„1,2,3,4çš„é¡ºåºè¿›è¡Œå¤„ç†
+        // 2.åœ¨è¿›è¡Œæ•°æ®æ¯”è¾ƒçš„ï¼Œä¸èƒ½ä½¿ç”¨åŸæ¥çš„arrè¿›è¡Œæ¯”è¾ƒï¼Œå› ä¸ºåœ¨å¤„ç†è¿‡ç¨‹ä¸­arrçš„å€¼æ˜¯å˜åŒ–çš„.
 
         T *new_arr = new T[right - left+1];
         for (int i = 0; i <= right - left; ++i) {
@@ -254,17 +254,17 @@ namespace MergeSortHelper
         }
 
          int left_bak   = left;
-         //[left, middle] Îª×ó±ß²¿·Ö
-         //[middle+1, right] ÎªÓÒ±ß²¿·Ö
-         // ËùÒÔÕâÀïĞèÒª+1
+         //[left, middle] ä¸ºå·¦è¾¹éƒ¨åˆ†
+         //[middle+1, right] ä¸ºå³è¾¹éƒ¨åˆ†
+         // æ‰€ä»¥è¿™é‡Œéœ€è¦+1
          int middle_bak = middle + 1;
          for (int k = left; k <= right; ++k) {
-               // left Õâ±ßÒÑ¾­´¦ÀíÍê
+               // left è¿™è¾¹å·²ç»å¤„ç†å®Œ
                if (left_bak > middle) {
                    arr[k] = new_arr[middle_bak-left];
                    ++middle_bak;
                } else if (middle_bak > right) {
-                   // right Õâ±ßÒÑ¾­´¦ÀíÍê
+                   // right è¿™è¾¹å·²ç»å¤„ç†å®Œ
                    arr[k] = new_arr[left_bak-left];
                    ++left_bak;
                } else if (new_arr[left_bak-left] < new_arr[middle_bak-left]) {  
@@ -286,7 +286,7 @@ namespace MergeSortHelper
     void _MergeSort(T arr[], size_t left, size_t right)
     {
         // if (left >= right) { return; }
-        // ÓÅ»¯µã1£ºÕâÀï¿ÉÒÔ²ÉÓÃinsertËã·¨½øĞĞÓÅ»¯
+        // ä¼˜åŒ–ç‚¹1ï¼šè¿™é‡Œå¯ä»¥é‡‡ç”¨insertç®—æ³•è¿›è¡Œä¼˜åŒ–
         if (right-left <= 15) {
             InsertSort(arr, left, right);
             return;
@@ -297,8 +297,8 @@ namespace MergeSortHelper
         _MergeSort(arr, left, middle);
         _MergeSort(arr, middle+1, right);
         // _Merge(arr, left, middle, right);
-        // ÓÅ»¯µã2£ºÈç¹ûÊı×éÊÇÓĞĞòµÄ¾Í²»ĞèÒªÔÚÅÅĞò
-        // Èç¹ûarr[middle] < arr[middle+1]¾Í²»ĞèÒªÔÚÅÅĞòÁË¡£
+        // ä¼˜åŒ–ç‚¹2ï¼šå¦‚æœæ•°ç»„æ˜¯æœ‰åºçš„å°±ä¸éœ€è¦åœ¨æ’åº
+        // å¦‚æœarr[middle] < arr[middle+1]å°±ä¸éœ€è¦åœ¨æ’åºäº†ã€‚
         if (arr[middle] > arr[middle+1]) {
             _Merge(arr, left, middle, right);
         }
@@ -307,28 +307,28 @@ namespace MergeSortHelper
     template <typename T>
     void _MergeSortBottomUp(T arr[], size_t left, size_t right)
     {
-        // sort_num±íÊ¾left, rightÓĞsort_num¸öÊıĞèÒªºÏ²¢
+        // sort_numè¡¨ç¤ºleft, rightæœ‰sort_numä¸ªæ•°éœ€è¦åˆå¹¶
         for (int sort_num = 1; sort_num <= right; sort_num += sort_num) {
-            // 0, 1 -> 2, 3 -> 4, 5ĞèÒªindexĞèÒª¼ÓÉÏsort_num+sort_numµÄÆ«ÒÆ
+            // 0, 1 -> 2, 3 -> 4, 5éœ€è¦indexéœ€è¦åŠ ä¸Šsort_num+sort_numçš„åç§»
             for (int index = 0; index + sort_num <= right; index += sort_num+sort_num) {
-                // ×¢ÒâË÷ÒıµÄ±ß½çÎÊÌâ
+                // æ³¨æ„ç´¢å¼•çš„è¾¹ç•Œé—®é¢˜
                 // left = index, middle = index+sort_num-1, right = middle+sort_num 
-                // ×¢ÒâÕâÀïÎªÊ²Ã´ĞèÒª-1,ÊÇÎªÁËmiddleµÄË÷Òı´Ó0¿ªÊ¼£¬²»ÄÜ´Ó1¿ªÊ¼
-                // Èç¹û´Ó1¿ªÊ¼£¬¾Í»áÈÏÎª[0,1]Õâ¸öÇø¼äµÄĞòÁĞÊÇÓĞĞòµÄ¡£
+                // æ³¨æ„è¿™é‡Œä¸ºä»€ä¹ˆéœ€è¦-1,æ˜¯ä¸ºäº†middleçš„ç´¢å¼•ä»0å¼€å§‹ï¼Œä¸èƒ½ä»1å¼€å§‹
+                // å¦‚æœä»1å¼€å§‹ï¼Œå°±ä¼šè®¤ä¸º[0,1]è¿™ä¸ªåŒºé—´çš„åºåˆ—æ˜¯æœ‰åºçš„ã€‚
                 _Merge(arr, index, index+sort_num-1, std::min<T>(index+sort_num+sort_num-1, right));
             }  // for index
         } // for sort_num
     }
 }
 
-// ×Ô¶¥ÏòÏÂµÄ±éÀú·½Ê½£¬ÕâÖÖ·½Ê½Ö»Ö§³ÖarrayËæ»ú·ÃÎÊµÄÌØĞÔ
+// è‡ªé¡¶å‘ä¸‹çš„éå†æ–¹å¼ï¼Œè¿™ç§æ–¹å¼åªæ”¯æŒarrayéšæœºè®¿é—®çš„ç‰¹æ€§
 template <typename T>
 void MergeSort(T arr[], int size)
 {
     MergeSortHelper::_MergeSort(arr, 0, size-1);
 }
 
-// ×Ôµ×ÏòÉÏµÄ·½Ê½£¬¿ÉÒÔÖ§³ÖÁ´±í£¬ËüÃ»ÓĞÊ¹ÓÃÊı×éµÄËæ»ú·ÃÎÊÌØĞÔ
+// è‡ªåº•å‘ä¸Šçš„æ–¹å¼ï¼Œå¯ä»¥æ”¯æŒé“¾è¡¨ï¼Œå®ƒæ²¡æœ‰ä½¿ç”¨æ•°ç»„çš„éšæœºè®¿é—®ç‰¹æ€§
 template <typename T>
 void MergeSortBottomUp(T arr[], int size)
 {
@@ -342,10 +342,10 @@ namespace QuickSortHelper
 template <typename T>
 int _paritial(T arr[], int left, int right)
 {
-    // 1.ÓÅ»¯µãËæ»ú½»»»Ò»¸öÖµ
+    // 1.ä¼˜åŒ–ç‚¹éšæœºäº¤æ¢ä¸€ä¸ªå€¼
     std::swap(arr[left], arr[rand()%(right-left+1)+left]);
 
-	// left_bakÊ¼ÖÕÖ¸ÏòĞ¡ÓÚµÈÓÚpivotµÄË÷Òı
+	// left_bakå§‹ç»ˆæŒ‡å‘å°äºç­‰äºpivotçš„ç´¢å¼•
     int left_bak = left;
     T value = arr[left];
     for (int i = left + 1; i <= right; ++i) {
@@ -354,23 +354,23 @@ int _paritial(T arr[], int left, int right)
             std::swap(arr[i], arr[left_bak]);
         }
     }
-    // ²»ÄÜ²ÉÓÃÕâÑùµÄ½»»»£¬valueÊÇ¸öÁÙÊ±Öµ¡£ÎÒÃÇĞèÒªµÄÊÇ½»»»left£¬left_bakÎ»ÖÃÉÏµÄÖµ
+    // ä¸èƒ½é‡‡ç”¨è¿™æ ·çš„äº¤æ¢ï¼Œvalueæ˜¯ä¸ªä¸´æ—¶å€¼ã€‚æˆ‘ä»¬éœ€è¦çš„æ˜¯äº¤æ¢leftï¼Œleft_bakä½ç½®ä¸Šçš„å€¼
     // std::swap(value, arr[left_bak]);
     std::swap(arr[left], arr[left_bak]);
 
     return left_bak;
 }
 
-// 2Â·ÅÅĞòËã·¨
-// ºËĞÄË¼Ïë£º
-// 1.»¹ÊÇµÚÒ»¸öÎ»ÖÃµÄÊı×éÎª»ù×¼¡£
-// 2.»¹ÊÇ°ÑÊı×éÏëÏó³É2¸ö²¿·Ö£¬Ò»¸öÊÇ<arr[0]²¿·Ö£¬Ò»¸öÊÇ>arr[0]²¿·Ö
-// 3.left(²»¶ÏµÄÂÖÑµÈ¥Ñ°ÕÒ)±íÊ¾×ó±ßµÄµÚÒ»¸ö´óÓÚarr[0], right(²»¶ÏµÄÂÖÑµÈ¥Ñ°ÕÒ)±íÊ¾ÓÒ±ßµÚÒ»¸öĞ¡ÓÚarr[0]
-// 4.×îºó½»»»Î»ÖÃµÄÖµ
+// 2è·¯æ’åºç®—æ³•
+// æ ¸å¿ƒæ€æƒ³ï¼š
+// 1.è¿˜æ˜¯ç¬¬ä¸€ä¸ªä½ç½®çš„æ•°ç»„ä¸ºåŸºå‡†ã€‚
+// 2.è¿˜æ˜¯æŠŠæ•°ç»„æƒ³è±¡æˆ2ä¸ªéƒ¨åˆ†ï¼Œä¸€ä¸ªæ˜¯<arr[0]éƒ¨åˆ†ï¼Œä¸€ä¸ªæ˜¯>arr[0]éƒ¨åˆ†
+// 3.left(ä¸æ–­çš„è½®è®­å»å¯»æ‰¾)è¡¨ç¤ºå·¦è¾¹çš„ç¬¬ä¸€ä¸ªå¤§äºarr[0], right(ä¸æ–­çš„è½®è®­å»å¯»æ‰¾)è¡¨ç¤ºå³è¾¹ç¬¬ä¸€ä¸ªå°äºarr[0]
+// 4.æœ€åäº¤æ¢ä½ç½®çš„å€¼
 template <typename T>
 int _paritial2(T arr[], int left, int right)
 {
-    // 1.ÓÅ»¯µãËæ»ú½»»»Ò»¸öÖµ
+    // 1.ä¼˜åŒ–ç‚¹éšæœºäº¤æ¢ä¸€ä¸ªå€¼
     std::swap(arr[left], arr[rand()%(right-left+1)+left]);
 
 	T pivot_value	= arr[left];
@@ -380,10 +380,10 @@ int _paritial2(T arr[], int left, int right)
 	//[left,left_bak) <= pivot_value
 	//(right_bak, right] >= pivot_value
 	while (true) {
-		// ×¢ÒâÕâÀï²»Ê¹ÓÃarr[left_bak]<=pivot_valueºÍarr[right_bak]>=pivot_value
-		// ¿¼ÂÇ¼«¶ËÇé¿öÈç¹ûÊı×éÊÇ[0, 1, 1, 1, 1, 1, 1, 1, 1]
-		// Èç¹û²ÉÓÃÏÖÔÚµÄ·½Ê½£¬ÄÇÃ´¾Í»á·µ»ØÖĞ¼äµÄË÷Òı
-		// µ«ÊÇÈç¹û²ÉÓÃ>=µÄ·½Ê½£¬¾Í»á·µ»Øµ¹ÊıµÚ¶ş¸öµÄË÷Òı£¬ÕâÑù»áÔì³ÉÊ÷µÄ²»Æ½ºâ£¬µ¼ÖÂĞ§ÂÊ½µµÍ
+		// æ³¨æ„è¿™é‡Œä¸ä½¿ç”¨arr[left_bak]<=pivot_valueå’Œarr[right_bak]>=pivot_value
+		// è€ƒè™‘æç«¯æƒ…å†µå¦‚æœæ•°ç»„æ˜¯[0, 1, 1, 1, 1, 1, 1, 1, 1]
+		// å¦‚æœé‡‡ç”¨ç°åœ¨çš„æ–¹å¼ï¼Œé‚£ä¹ˆå°±ä¼šè¿”å›ä¸­é—´çš„ç´¢å¼•
+		// ä½†æ˜¯å¦‚æœé‡‡ç”¨>=çš„æ–¹å¼ï¼Œå°±ä¼šè¿”å›å€’æ•°ç¬¬äºŒä¸ªçš„ç´¢å¼•ï¼Œè¿™æ ·ä¼šé€ æˆæ ‘çš„ä¸å¹³è¡¡ï¼Œå¯¼è‡´æ•ˆç‡é™ä½
 		while (left_bak <= right && arr[left_bak] < pivot_value) ++left_bak;
 		while (right_bak >= left+1 && arr[right_bak] > pivot_value) --right_bak;
 
@@ -394,28 +394,28 @@ int _paritial2(T arr[], int left, int right)
 		--right_bak;
 	}
 
-	// right_bakÊ¼ÖÕÖ¸Ïò<pivotµÄË÷Òı
+	// right_bakå§‹ç»ˆæŒ‡å‘<pivotçš„ç´¢å¼•
 	std::swap (arr[right_bak], arr[left]);
 
     return right_bak;
 }
 
-// 1.×¢ÒâÕâÖÖ·½Ê½µÄquick sortÔÚÊı×éÊÇÍêÈ«ÓĞĞòµÄÇé¿öÏÂ£¬¸´ÔÓ¶È¾Í»áÍË»¯ÎªO(n^2)
-// Ã¿´Î¶¼ÊÇÈ¡³öÊı×éµÄµÚÒ»¸öÔªËØ×÷Îª»ù×¼£¬ÔÚÊı×éÍêÈ«ÓĞĞòµÄÇé¿öÏÂ
-// Ã¿´Î·Ö³öµÄÁ½×éÊı×é£¬¶¼ÊÇleft¶¼Ö»ÓĞÒ»¸öÔªËØ£¬right¾ÍÊÇÊ£ÏÂµÄÔªËØ
-// Í¬Ê±ĞèÒª×¢ÒâÔÚÒÔÓĞĞòµÄÇé¿öÏÂ£¬Èç¹ûÊıÁ¿Ì«´ó»áÔì³Éstack over flow
-// 2.²ÉÈ¡ÁËËæ»ú»ñÈ¡Êı×éÖĞµÄÒ»¸öÖµ×÷Îª»ù×¼£¬¾Í²»»áÔì³É1ÖĞËùËµµÄÄÇÖÖÇé¿ö
+// 1.æ³¨æ„è¿™ç§æ–¹å¼çš„quick sortåœ¨æ•°ç»„æ˜¯å®Œå…¨æœ‰åºçš„æƒ…å†µä¸‹ï¼Œå¤æ‚åº¦å°±ä¼šé€€åŒ–ä¸ºO(n^2)
+// æ¯æ¬¡éƒ½æ˜¯å–å‡ºæ•°ç»„çš„ç¬¬ä¸€ä¸ªå…ƒç´ ä½œä¸ºåŸºå‡†ï¼Œåœ¨æ•°ç»„å®Œå…¨æœ‰åºçš„æƒ…å†µä¸‹
+// æ¯æ¬¡åˆ†å‡ºçš„ä¸¤ç»„æ•°ç»„ï¼Œéƒ½æ˜¯leftéƒ½åªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œrightå°±æ˜¯å‰©ä¸‹çš„å…ƒç´ 
+// åŒæ—¶éœ€è¦æ³¨æ„åœ¨ä»¥æœ‰åºçš„æƒ…å†µä¸‹ï¼Œå¦‚æœæ•°é‡å¤ªå¤§ä¼šé€ æˆstack over flow
+// 2.é‡‡å–äº†éšæœºè·å–æ•°ç»„ä¸­çš„ä¸€ä¸ªå€¼ä½œä¸ºåŸºå‡†ï¼Œå°±ä¸ä¼šé€ æˆ1ä¸­æ‰€è¯´çš„é‚£ç§æƒ…å†µ
 template <typename T>
 void _QuickSort(T arr[], int left, int right)
 {
     // if (left > right) { return; }
-    // 1.²ÉÈ¡ºÍmerge sortÍ¬ÑùµÄ·½Ê½
+    // 1.é‡‡å–å’Œmerge sortåŒæ ·çš„æ–¹å¼
     if (right - left <= 25) {
         InsertSort<T>(arr, left, right);
         return;
     }
 
-    // ÕâÀïÊÇĞèÒªÕÒ³öÃ¿´Î·Ö¸îÖ®ºóÊı×éµÄÊ×ÔªËØµÄµØÖ·
+    // è¿™é‡Œæ˜¯éœ€è¦æ‰¾å‡ºæ¯æ¬¡åˆ†å‰²ä¹‹åæ•°ç»„çš„é¦–å…ƒç´ çš„åœ°å€
     int index = _paritial(arr, left, right);
 
     // [left, index-1]
@@ -428,13 +428,13 @@ template <typename T>
 void _QuickSort2(T arr[], int left, int right)
 {
     // if (left > right) { return; }
-    // 1.²ÉÈ¡ºÍmerge sortÍ¬ÑùµÄ·½Ê½
+    // 1.é‡‡å–å’Œmerge sortåŒæ ·çš„æ–¹å¼
     if (right - left <= 15) {
         InsertSort<T>(arr, left, right);
         return;
     }
 
-    // ÕâÀïÊÇĞèÒªÕÒ³öÃ¿´Î·Ö¸îÖ®ºóÊı×éµÄÊ×ÔªËØµÄµØÖ·
+    // è¿™é‡Œæ˜¯éœ€è¦æ‰¾å‡ºæ¯æ¬¡åˆ†å‰²ä¹‹åæ•°ç»„çš„é¦–å…ƒç´ çš„åœ°å€
     int index = _paritial2(arr, left, right);
 
     // [left, index-1]
@@ -443,12 +443,12 @@ void _QuickSort2(T arr[], int left, int right)
     _QuickSort2(arr, index+1, right);
 }
 
-// 3Â·quick sort
-// 3Â·ÅÅĞòµÄºËĞÄ¾ÍÊÇ£º½«Êı×é¿´³É3¸ö²¿·Ö[left, lt-1] > value, [lt,gt] == value, [gt+1, right] < value
+// 3è·¯quick sort
+// 3è·¯æ’åºçš„æ ¸å¿ƒå°±æ˜¯ï¼šå°†æ•°ç»„çœ‹æˆ3ä¸ªéƒ¨åˆ†[left, lt-1] > value, [lt,gt] == value, [gt+1, right] < value
 template <typename T>
 void _QuickSort3(T arr[], int left, int right)
 {
-    // 1.²ÉÈ¡ºÍmerge sortÍ¬ÑùµÄ·½Ê½
+    // 1.é‡‡å–å’Œmerge sortåŒæ ·çš„æ–¹å¼
     if (right - left <= 15) {
         InsertSort<T>(arr, left, right);
         return;
@@ -487,28 +487,28 @@ void _QuickSort3(T arr[], int left, int right)
 template <typename T>
 void QuickSort(T arr[], int size)
 {
-    // ÉèÖÃÊ±¼äÖÖ×Ó
+    // è®¾ç½®æ—¶é—´ç§å­
     srand(time(nullptr));
 
-	// µÚÒ»ÖÖquick sort
+	// ç¬¬ä¸€ç§quick sort
     QuickSortHelper::_QuickSort(arr, 0, size-1);
 }
 
-// µÚ¶şÖÖ2Â·quick sort
+// ç¬¬äºŒç§2è·¯quick sort
 template <typename T>
 void QuickSort2(T arr[], int size)
 {
-    // ÉèÖÃÊ±¼äÖÖ×Ó
+    // è®¾ç½®æ—¶é—´ç§å­
     srand(time(nullptr));
 
     QuickSortHelper::_QuickSort2(arr, 0, size-1);
 }
 
-// µÚÈıÖÖ3Â·quick sort
+// ç¬¬ä¸‰ç§3è·¯quick sort
 template <typename T>
 void QuickSort3(T arr[], int size)
 {
-    // ÉèÖÃÊ±¼äÖÖ×Ó
+    // è®¾ç½®æ—¶é—´ç§å­
     srand(time(nullptr));
 
     QuickSortHelper::_QuickSort3(arr, 0, size-1);

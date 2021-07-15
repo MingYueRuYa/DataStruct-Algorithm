@@ -2,10 +2,10 @@
 
 #include "sorthelper.h"
 
-//1.ÈçºÎÕÒµ½Êı×éµÄÒ»¹²ÓĞ¶àÉÙÄæĞò¶Ô
-// ÄæĞò¶Ô¿ÉÒÔºâÁ¿Ò»¸öÊı×éµÄÓĞĞò³Ì¶È£¬Èç¹ûÄæĞò¶ÔÔ½¶à±íÊ¾Õâ¸öÊı×éÔ½»ìÂÒ
-// Ê¹ÓÃ¹é²¢ÅÅĞòµÄË¼Â·
-//2.ÈçºÎÕÒµ½Ò»¸öÊı×éÖĞµÚkÎ»µÄÊıÖµÊÇ¶àÉÙ
+//1.å¦‚ä½•æ‰¾åˆ°æ•°ç»„çš„ä¸€å…±æœ‰å¤šå°‘é€†åºå¯¹
+// é€†åºå¯¹å¯ä»¥è¡¡é‡ä¸€ä¸ªæ•°ç»„çš„æœ‰åºç¨‹åº¦ï¼Œå¦‚æœé€†åºå¯¹è¶Šå¤šè¡¨ç¤ºè¿™ä¸ªæ•°ç»„è¶Šæ··ä¹±
+// ä½¿ç”¨å½’å¹¶æ’åºçš„æ€è·¯
+//2.å¦‚ä½•æ‰¾åˆ°ä¸€ä¸ªæ•°ç»„ä¸­ç¬¬kä½çš„æ•°å€¼æ˜¯å¤šå°‘
 namespace homework
 {
 	long long _Merge(int arr[], int left, int middle, int right)
@@ -21,7 +21,7 @@ namespace homework
 		long long num	= 0;
 
 		for (int k = left; k <= right; ++k) {
-			// leftÒÑ¾­±È½ÏÍêÁË
+			// leftå·²ç»æ¯”è¾ƒå®Œäº†
 			if (left_bak > middle) {
 				arr[k] = aux[middle_bak-left];
 				++middle_bak;
@@ -35,8 +35,8 @@ namespace homework
 				// right < left
 				arr[k] = aux[middle_bak-left];
 				++middle_bak;
-				// ÒòÎªaux[middle_bak] < aux[left_bak]£¬ËùÒÔ»¹Ê£ÏÂµÄmiddle-left_bak+1¶¼ÊÇ
-				// ÄæĞò¶Ô
+				// å› ä¸ºaux[middle_bak] < aux[left_bak]ï¼Œæ‰€ä»¥è¿˜å‰©ä¸‹çš„middle-left_bak+1éƒ½æ˜¯
+				// é€†åºå¯¹
 				num += (middle-left_bak+1);
 			}
 		}
@@ -67,7 +67,7 @@ namespace homework
 	void test_arr_chaos()
 	{
 		size_t size= 10000;
-		// ²âÊÔËæ»úÊı×é
+		// æµ‹è¯•éšæœºæ•°ç»„
 		int *new_arr = SortHelper::GenerateRandomArray(size, 0, 10);
 
 		cout << "number: " << homework::MergeSort(new_arr, size) << endl;
@@ -75,7 +75,7 @@ namespace homework
 		delete[] new_arr;
 		new_arr = nullptr;
 
-		// ²âÊÔÓĞĞòÊı×é£¬ÄæĞò¶ÔÓ¦¸ÃÊÇ0
+		// æµ‹è¯•æœ‰åºæ•°ç»„ï¼Œé€†åºå¯¹åº”è¯¥æ˜¯0
 		new_arr = SortHelper::GenerateNearlyOrderArray(size, 0);
 		cout << "number: " << homework::MergeSort(new_arr, size) << endl;
 		// "number:0"
@@ -86,7 +86,7 @@ namespace homework
 
 	int _partition(int *arr, int left, int right)
 	{
-		// ¿ÉÒÔÓÅ»¯
+		// å¯ä»¥ä¼˜åŒ–
 		int value = arr[left];
 
 		int left_bak	= left+1;
@@ -110,7 +110,7 @@ namespace homework
 	//[left, right]
 	int QuickSort(int *arr, int findpos, int left, int right)
 	{
-		// ÎªÊ²Ã´ÕâÀïĞèÒª·¢»Óarr[left];
+		// ä¸ºä»€ä¹ˆè¿™é‡Œéœ€è¦å‘æŒ¥arr[left];
 		// if (left == right) { return arr[left]; }
 		if (left > right) { return 0; }
 
@@ -119,16 +119,16 @@ namespace homework
 		if (pos == findpos) { return arr[pos]; }
 
 		if (findpos > pos) {
-			// È¥ÕÒÉÏ°ë²¿·Ö
+			// å»æ‰¾ä¸ŠåŠéƒ¨åˆ†
 			return QuickSort(arr, findpos, pos+1, right);
 		} else {
-			// È¥ÕÒÏÂ°ë²¿·Ö
+			// å»æ‰¾ä¸‹åŠéƒ¨åˆ†
 			return QuickSort(arr, findpos, left, pos-1);
 		}
 
 	}
 
-	//2.ÕÒµ½Êı×éÖĞµÚk¸öÎ»ÖÃµÄÔªËØ
+	//2.æ‰¾åˆ°æ•°ç»„ä¸­ç¬¬kä¸ªä½ç½®çš„å…ƒç´ 
 	int FindKPosValue(int *arr, size_t pos, size_t size)
 	{
 		assert(pos >= 0 && pos <= size-1);

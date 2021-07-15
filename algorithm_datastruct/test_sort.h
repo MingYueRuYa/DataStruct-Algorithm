@@ -71,7 +71,7 @@ void test_quick_sort()
     int *arr    = SortHelper::GenerateRandomArray(size, range[0], range[1]);
     int *arr2	= SortHelper::CopyArr (arr, size);
 	
-	// ²âÊÔµÄÊı×éÊÇËæ»úµÄ
+	// æµ‹è¯•çš„æ•°ç»„æ˜¯éšæœºçš„
     SortHelper::TestSort (L"Merge Bottom Up Sort", arr, size, SortHelper::MergeSortBottomUp);
     SortHelper::TestSort(L"Quick Sort", arr2, size, SortHelper::QuickSort);
     
@@ -80,8 +80,8 @@ void test_quick_sort()
 
     cout << "test generate order array " << endl;
 
-	// ÔÚÓĞĞòÊı×éµÄÏÂ£¬Èç¹ûÊıÁ¿Ì«´óÖ±½ÓÔì³ÉÁËstack over flow
-	// ²âÊÔÓĞĞòÊı×é
+	// åœ¨æœ‰åºæ•°ç»„çš„ä¸‹ï¼Œå¦‚æœæ•°é‡å¤ªå¤§ç›´æ¥é€ æˆäº†stack over flow
+	// æµ‹è¯•æœ‰åºæ•°ç»„
     size	= 10000;
     arr		= SortHelper::GenerateNearlyOrderArray(size, 0);
 	arr2	= SortHelper::CopyArr(arr, size);
@@ -93,12 +93,12 @@ void test_quick_sort()
     delete[] arr2;
 }
 
-// ²âÊÔ2Â·quick sort
+// æµ‹è¯•2è·¯quick sort
 void test_quick_sort2()
 {
     size_t size = 1000000;
     int range[] = {0, 1000};
-	// ²âÊÔ´óÁ¿µÄÓĞÖØ¸´µÄÊı×é
+	// æµ‹è¯•å¤§é‡çš„æœ‰é‡å¤çš„æ•°ç»„
     int *arr    = SortHelper::GenerateRandomArray(size, range[0], 10);
     int *arr2	= SortHelper::CopyArr (arr, size);
 
@@ -109,12 +109,12 @@ void test_quick_sort2()
     delete[] arr2;
 }
 
-// ²âÊÔ3Â·quick sort
+// æµ‹è¯•3è·¯quick sort
 void test_quick_sort3()
 {
     size_t size = 1000000;
     int range[] = {0, 1000};
-	// ²âÊÔ´óÁ¿µÄÓĞÖØ¸´µÄÊı×é
+	// æµ‹è¯•å¤§é‡çš„æœ‰é‡å¤çš„æ•°ç»„
     int *arr    = SortHelper::GenerateRandomArray(size, range[0], 10);
     int *arr2	= SortHelper::CopyArr (arr, size);
     int *arr3	= SortHelper::CopyArr (arr, size);

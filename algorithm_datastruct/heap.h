@@ -32,13 +32,13 @@ using std::string;
 namespace DSA
 {
     namespace Heap {
-		// ´ó¶¥¶ÑÖĞµÄµÚÒ»¸öÎ»ÖÃ¿Õ³ö£¬²»²ÉÓÃ
+		// å¤§é¡¶å †ä¸­çš„ç¬¬ä¸€ä¸ªä½ç½®ç©ºå‡ºï¼Œä¸é‡‡ç”¨
 		// [0, 6, 5, 4, 3, 2, 2, 1]
 		template<typename Item>	
 		class MaxHeap
 		{
 		public:
-			// ¹¹Ôìº¯Êı£¬³õÊ¼»¯Êı×éµÄÈİÁ¿
+			// æ„é€ å‡½æ•°ï¼Œåˆå§‹åŒ–æ•°ç»„çš„å®¹é‡
 			MaxHeap(int capacity) {
 				data = new Item[capacity+1];
 				this->count = 0;
@@ -65,15 +65,15 @@ namespace DSA
 				data = nullptr;
 			}
 
-			// ·µ»Ø¶ÑÖĞµÄÏÖÓĞ¶àÉÙ¸öÔªËØ
+			// è¿”å›å †ä¸­çš„ç°æœ‰å¤šå°‘ä¸ªå…ƒç´ 
 			int size() {
 				return this->count; 
 			}
 
-			// ÅĞ¶Ï¶ÑÖĞÊÇ·ñÎª¿Õ
+			// åˆ¤æ–­å †ä¸­æ˜¯å¦ä¸ºç©º
 			int empty() { return 0 == this->count; }
 
-			// ²åÈëÔªËØ
+			// æ’å…¥å…ƒç´ 
 			void insert(Item newdata) {
 				assert(count+1 <= capacity);
 				data[count + 1] = newdata;
@@ -82,7 +82,7 @@ namespace DSA
 				count++;
 			}
 
-			// µ¯³öÒ»¸öÔªËØ
+			// å¼¹å‡ºä¸€ä¸ªå…ƒç´ 
 			Item extractItem() {
 				assert(count > 0);
 
@@ -94,16 +94,16 @@ namespace DSA
 				return ret;
 			}
 
-			// »ñÈ¡¶ÑÖĞ×î´óµÄÔªËØ
+			// è·å–å †ä¸­æœ€å¤§çš„å…ƒç´ 
 			Item maxItem() {
 				return data[1];
 			}
 
 		private:
 			void shiftUp(int pos) {
-				// 1.²»¶ÏµÄÕÒ³ö¸¸½Úµã£¬Óë¸¸½Úµã¶Ô±È
-				// Èç¹û±È¸¸½Úµã´ó£¬¾ÍÓë¸¸½Úµã½»»»£¬·ñÔòÍË³ö
-				// ×¢ÒâÁÙ½çµãÌõ¼ş£ºpos > 1
+				// 1.ä¸æ–­çš„æ‰¾å‡ºçˆ¶èŠ‚ç‚¹ï¼Œä¸çˆ¶èŠ‚ç‚¹å¯¹æ¯”
+				// å¦‚æœæ¯”çˆ¶èŠ‚ç‚¹å¤§ï¼Œå°±ä¸çˆ¶èŠ‚ç‚¹äº¤æ¢ï¼Œå¦åˆ™é€€å‡º
+				// æ³¨æ„ä¸´ç•Œç‚¹æ¡ä»¶ï¼špos > 1
 				while(pos > 1 && data[pos/2] < data[pos]) {
 					std::swap(data[pos/2], data[pos]);
 					pos /= 2;
@@ -111,42 +111,42 @@ namespace DSA
 			}
 
 			void shiftDown(int pos) {
-				// ´ÓË÷ÒıµÄÎª1¿ªÊ¼£¬×óÓÒÁ½¸ö×ÓÊ÷ÏÈ½øĞĞ±È½Ï
-				// ×óÓÒ×ÓÊ÷½øĞĞ±È½ÏÍêÖ®ºó£¬ÔÚºÍ¸¸½Úµã½øĞĞ±È½Ï£¬Èç¹û±È¸¸½Úµã´ó£¬¾Í½øĞĞ¶Ôµ÷¡£
-				// Èç¹ûĞ¡£¬¾ÍÍË³ö±È½Ï
-				// ×¢ÒâÕâÀïµÄÁÙ½çÌõ¼şÊÇ2*pos == count£¬ÒòÎª×îºóÒ»¸öµÄ¸¸½Úµã¿ÉÄÜÃ»ÓĞÓÒº¢×Ó
+				// ä»ç´¢å¼•çš„ä¸º1å¼€å§‹ï¼Œå·¦å³ä¸¤ä¸ªå­æ ‘å…ˆè¿›è¡Œæ¯”è¾ƒ
+				// å·¦å³å­æ ‘è¿›è¡Œæ¯”è¾ƒå®Œä¹‹åï¼Œåœ¨å’Œçˆ¶èŠ‚ç‚¹è¿›è¡Œæ¯”è¾ƒï¼Œå¦‚æœæ¯”çˆ¶èŠ‚ç‚¹å¤§ï¼Œå°±è¿›è¡Œå¯¹è°ƒã€‚
+				// å¦‚æœå°ï¼Œå°±é€€å‡ºæ¯”è¾ƒ
+				// æ³¨æ„è¿™é‡Œçš„ä¸´ç•Œæ¡ä»¶æ˜¯2*pos == countï¼Œå› ä¸ºæœ€åä¸€ä¸ªçš„çˆ¶èŠ‚ç‚¹å¯èƒ½æ²¡æœ‰å³å­©å­
 				while (2*pos <= count) {
 					// left node
 					int child_node = pos * 2;
 					// child_node +1 --> right node
-					// ±È½ÏÁ½¸ö×Ó½ÚµãË­´óË­Ğ¡
+					// æ¯”è¾ƒä¸¤ä¸ªå­èŠ‚ç‚¹è°å¤§è°å°
 					if (child_node+1 <= count && 
 						data[child_node] < data[child_node+1]) {
 						++child_node;
 					}
 					
-					// ×î´óµÄ×Ó½ÚµãÔÚºÍ¸¸½Úµã±È½Ï
-					// Èç¹û¸¸½Úµã´ó£¬Ö±½Ó·µ»Ø£¬·ñÔò½Ï´óµÄ×Ó½Úµã¾ÍºÍ¸¸½Úµã¶Ô»»
+					// æœ€å¤§çš„å­èŠ‚ç‚¹åœ¨å’Œçˆ¶èŠ‚ç‚¹æ¯”è¾ƒ
+					// å¦‚æœçˆ¶èŠ‚ç‚¹å¤§ï¼Œç›´æ¥è¿”å›ï¼Œå¦åˆ™è¾ƒå¤§çš„å­èŠ‚ç‚¹å°±å’Œçˆ¶èŠ‚ç‚¹å¯¹æ¢
 					if (data[pos] > data[child_node]) { break; }
 
 					std::swap(data[pos], data[child_node]);
 
-					// ×ßµ½ÏÂÒ»½Úµã
+					// èµ°åˆ°ä¸‹ä¸€èŠ‚ç‚¹
 					pos = child_node;
 				}
 			}
 
 		public:
-			// ÒÔÊ÷×´´òÓ¡Õû¸ö¶Ñ½á¹¹
+			// ä»¥æ ‘çŠ¶æ‰“å°æ•´ä¸ªå †ç»“æ„
 			void testPrint(){
 
-				// ÎÒÃÇµÄtestPrintÖ»ÄÜ´òÓ¡100¸öÔªËØÒÔÄÚµÄ¶ÑµÄÊ÷×´ĞÅÏ¢
+				// æˆ‘ä»¬çš„testPrintåªèƒ½æ‰“å°100ä¸ªå…ƒç´ ä»¥å†…çš„å †çš„æ ‘çŠ¶ä¿¡æ¯
 				if( size() >= 100 ){
 					cout<<"This print function can only work for less than 100 int";
 					return;
 				}
 
-				// ÎÒÃÇµÄtestPrintÖ»ÄÜ´¦ÀíÕûÊıĞÅÏ¢
+				// æˆ‘ä»¬çš„testPrintåªèƒ½å¤„ç†æ•´æ•°ä¿¡æ¯
 				if( typeid(Item) != typeid(int) ){
 					cout <<"This print function can only work for int item";
 					return;
@@ -155,7 +155,7 @@ namespace DSA
 				cout<<"The max heap size is: "<<size()<<endl;
 				cout<<"Data in the max heap: ";
 				for( int i = 1 ; i <= size() ; i ++ ){
-					// ÎÒÃÇµÄtestPrintÒªÇó¶ÑÖĞµÄËùÓĞÕûÊıÔÚ[0, 100)µÄ·¶Î§ÄÚ
+					// æˆ‘ä»¬çš„testPrintè¦æ±‚å †ä¸­çš„æ‰€æœ‰æ•´æ•°åœ¨[0, 100)çš„èŒƒå›´å†…
 					assert( data[i] >= 0 && data[i] < 100 );
 					cout<<data[i]<<" ";
 				}
@@ -238,7 +238,7 @@ namespace DSA
 		class IndexMaxHeap
 		{
 		public:
-			// ¹¹Ôìº¯Êı£¬³õÊ¼»¯Êı×éµÄÈİÁ¿
+			// æ„é€ å‡½æ•°ï¼Œåˆå§‹åŒ–æ•°ç»„çš„å®¹é‡
 			IndexMaxHeap(int capacity) {
 				data = new Item[capacity+1];
 				indexes = new int[capacity+1];
@@ -275,16 +275,16 @@ namespace DSA
 				indexes = nullptr;
 			}
 
-			// ·µ»Ø¶ÑÖĞµÄÏÖÓĞ¶àÉÙ¸öÔªËØ
+			// è¿”å›å †ä¸­çš„ç°æœ‰å¤šå°‘ä¸ªå…ƒç´ 
 			int size() {
 				return this->count; 
 			}
 
-			// ÅĞ¶Ï¶ÑÖĞÊÇ·ñÎª¿Õ
+			// åˆ¤æ–­å †ä¸­æ˜¯å¦ä¸ºç©º
 			int empty() { return 0 == this->count; }
 
-			// ²åÈëÔªËØ
-			// ¶ÔÓÃ»§À´Ëµ²åÈëĞÂµÄÔªËØ£¬ÔªËØË÷Òı´Ó0¿ªÊ¼
+			// æ’å…¥å…ƒç´ 
+			// å¯¹ç”¨æˆ·æ¥è¯´æ’å…¥æ–°çš„å…ƒç´ ï¼Œå…ƒç´ ç´¢å¼•ä»0å¼€å§‹
 			void insert(int data_index, Item newdata) {
 				assert(count+1 <= capacity);
 				data_index += 1;
@@ -295,7 +295,7 @@ namespace DSA
 				shiftUp(count);
 			}
 
-			// µ¯³öÒ»¸öÔªËØ£¬ĞŞ¸Ä»¹ÊÇË÷ÒıÖµ
+			// å¼¹å‡ºä¸€ä¸ªå…ƒç´ ï¼Œä¿®æ”¹è¿˜æ˜¯ç´¢å¼•å€¼
 			Item extractItem() {
 				assert(count > 0);
 
@@ -307,7 +307,7 @@ namespace DSA
 				return ret;
 			}
 
-			// È¡³ö¶Ñ¶¥×î´óÔªËØµÄË÷Òı
+			// å–å‡ºå †é¡¶æœ€å¤§å…ƒç´ çš„ç´¢å¼•
 			int getMaxHeapIndex() {
 				int max_index = indexes[1] - 1;
 
@@ -318,7 +318,7 @@ namespace DSA
 				return max_index;
 			}
 
-			// »ñÈ¡¶ÑÖĞ×î´óµÄÔªËØ
+			// è·å–å †ä¸­æœ€å¤§çš„å…ƒç´ 
 			Item maxItem() {
 				return data[indexes[1]];
 			}
@@ -331,20 +331,20 @@ namespace DSA
 				return data[indexes[data_index + 1]];
 			}
 
-			// ÓÃ»§µÄË÷ÒıÊÇ0¿ªÊ¼µÄ£¬¶øÎÒÃÇÊµ¼ÊÊÇ´Ó1¿ªÊ¼
-			// ËùÒÔdata_index += 1;
+			// ç”¨æˆ·çš„ç´¢å¼•æ˜¯0å¼€å§‹çš„ï¼Œè€Œæˆ‘ä»¬å®é™…æ˜¯ä»1å¼€å§‹
+			// æ‰€ä»¥data_index += 1;
 			void change(int data_index, Item new_data) {
 				assert(data_index+1 <= count);
 				
 				data_index += 1;
 
-				// ×¢ÒâindexesµÄË³Ğò¾ÍÊÇË÷Òı¶ÑÔÚÄÚ´æµÄË³Ğò
-				// Êµ¼ÊÉÏindexesÀïÃæ±£´æµÄÊÇdataÖĞÊı¾İµÄË÷Òı
+				// æ³¨æ„indexesçš„é¡ºåºå°±æ˜¯ç´¢å¼•å †åœ¨å†…å­˜çš„é¡ºåº
+				// å®é™…ä¸Šindexesé‡Œé¢ä¿å­˜çš„æ˜¯dataä¸­æ•°æ®çš„ç´¢å¼•
 				data[indexes[data_index]] = new_data;
 				shiftUp(data_index);
 				shiftDown(data_index);
 
-				//1.ÕÒµ½¶ÑÖĞÊµ¼Ê¶ÔÓ¦µÄË÷ÒıÎ»ÖÃ
+				//1.æ‰¾åˆ°å †ä¸­å®é™…å¯¹åº”çš„ç´¢å¼•ä½ç½®
 				/*
 				int actual_index = 0;
 				data_index += 1;
@@ -367,16 +367,16 @@ namespace DSA
 			}
 
 		public:
-			// ÒÔÊ÷×´´òÓ¡Õû¸ö¶Ñ½á¹¹
+			// ä»¥æ ‘çŠ¶æ‰“å°æ•´ä¸ªå †ç»“æ„
 			void testPrint(){
 
-				// ÎÒÃÇµÄtestPrintÖ»ÄÜ´òÓ¡100¸öÔªËØÒÔÄÚµÄ¶ÑµÄÊ÷×´ĞÅÏ¢
+				// æˆ‘ä»¬çš„testPrintåªèƒ½æ‰“å°100ä¸ªå…ƒç´ ä»¥å†…çš„å †çš„æ ‘çŠ¶ä¿¡æ¯
 				if( size() >= 100 ){
 					cout<<"This print function can only work for less than 100 int";
 					return;
 				}
 
-				// ÎÒÃÇµÄtestPrintÖ»ÄÜ´¦ÀíÕûÊıĞÅÏ¢
+				// æˆ‘ä»¬çš„testPrintåªèƒ½å¤„ç†æ•´æ•°ä¿¡æ¯
 				if( typeid(Item) != typeid(int) ){
 					cout <<"This print function can only work for int item";
 					return;
@@ -385,7 +385,7 @@ namespace DSA
 				cout<<"The max heap size is: "<<size()<<endl;
 				cout<<"Data in the max heap: ";
 				for( int i = 1 ; i <= size() ; i ++ ){
-					// ÎÒÃÇµÄtestPrintÒªÇó¶ÑÖĞµÄËùÓĞÕûÊıÔÚ[0, 100)µÄ·¶Î§ÄÚ
+					// æˆ‘ä»¬çš„testPrintè¦æ±‚å †ä¸­çš„æ‰€æœ‰æ•´æ•°åœ¨[0, 100)çš„èŒƒå›´å†…
 					assert( data[indexes[i]] >= 0 && data[indexes[i]] < 100 );
 					cout<<data[indexes[i]]<<" ";
 				}
@@ -459,11 +459,11 @@ namespace DSA
 			}
 
 		private:
-			// Ë÷Òı¶ÑÖĞ, Êı¾İÖ®¼äµÄ±È½Ï¸ù¾İdataµÄ´óĞ¡½øĞĞ±È½Ï, µ«Êµ¼Ê²Ù×÷µÄÊÇË÷Òı
+			// ç´¢å¼•å †ä¸­, æ•°æ®ä¹‹é—´çš„æ¯”è¾ƒæ ¹æ®dataçš„å¤§å°è¿›è¡Œæ¯”è¾ƒ, ä½†å®é™…æ“ä½œçš„æ˜¯ç´¢å¼•
 			void shiftUp(int pos) {
-				// 1.²»¶ÏµÄÕÒ³ö¸¸½Úµã£¬Óë¸¸½Úµã¶Ô±È
-				// Èç¹û±È¸¸½Úµã´ó£¬¾ÍÓë¸¸½Úµã½»»»£¬·ñÔòÍË³ö
-				// ×¢ÒâÁÙ½çµãÌõ¼ş£ºpos > 1
+				// 1.ä¸æ–­çš„æ‰¾å‡ºçˆ¶èŠ‚ç‚¹ï¼Œä¸çˆ¶èŠ‚ç‚¹å¯¹æ¯”
+				// å¦‚æœæ¯”çˆ¶èŠ‚ç‚¹å¤§ï¼Œå°±ä¸çˆ¶èŠ‚ç‚¹äº¤æ¢ï¼Œå¦åˆ™é€€å‡º
+				// æ³¨æ„ä¸´ç•Œç‚¹æ¡ä»¶ï¼špos > 1
 				while(pos > 1 && data[indexes[pos/2]] < data[indexes[pos]]) {
 					std::swap(indexes[pos/2], indexes[pos]);
 					pos /= 2;
@@ -471,27 +471,27 @@ namespace DSA
 			}
 
 			void shiftDown(int pos) {
-				// ´ÓË÷ÒıµÄÎª1¿ªÊ¼£¬×óÓÒÁ½¸ö×ÓÊ÷ÏÈ½øĞĞ±È½Ï
-				// ×óÓÒ×ÓÊ÷½øĞĞ±È½ÏÍêÖ®ºó£¬ÔÚºÍ¸¸½Úµã½øĞĞ±È½Ï£¬Èç¹û±È¸¸½Úµã´ó£¬¾Í½øĞĞ¶Ôµ÷¡£
-				// Èç¹ûĞ¡£¬¾ÍÍË³ö±È½Ï
-				// ×¢ÒâÕâÀïµÄÁÙ½çÌõ¼şÊÇ2*pos == count£¬ÒòÎª×îºóÒ»¸öµÄ¸¸½Úµã¿ÉÄÜÃ»ÓĞÓÒº¢×Ó
+				// ä»ç´¢å¼•çš„ä¸º1å¼€å§‹ï¼Œå·¦å³ä¸¤ä¸ªå­æ ‘å…ˆè¿›è¡Œæ¯”è¾ƒ
+				// å·¦å³å­æ ‘è¿›è¡Œæ¯”è¾ƒå®Œä¹‹åï¼Œåœ¨å’Œçˆ¶èŠ‚ç‚¹è¿›è¡Œæ¯”è¾ƒï¼Œå¦‚æœæ¯”çˆ¶èŠ‚ç‚¹å¤§ï¼Œå°±è¿›è¡Œå¯¹è°ƒã€‚
+				// å¦‚æœå°ï¼Œå°±é€€å‡ºæ¯”è¾ƒ
+				// æ³¨æ„è¿™é‡Œçš„ä¸´ç•Œæ¡ä»¶æ˜¯2*pos == countï¼Œå› ä¸ºæœ€åä¸€ä¸ªçš„çˆ¶èŠ‚ç‚¹å¯èƒ½æ²¡æœ‰å³å­©å­
 				while (2*pos <= count) {
 					// left node
 					int child_node = pos * 2;
 					// child_node +1 --> right node
-					// ±È½ÏÁ½¸ö×Ó½ÚµãË­´óË­Ğ¡
+					// æ¯”è¾ƒä¸¤ä¸ªå­èŠ‚ç‚¹è°å¤§è°å°
 					if (child_node+1 <= count && 
 						data[indexes[child_node]] < data[indexes[child_node+1]]) {
 						++child_node;
 					}
 					
-					// ×î´óµÄ×Ó½ÚµãÔÚºÍ¸¸½Úµã±È½Ï
-					// Èç¹û¸¸½Úµã´ó£¬Ö±½Ó·µ»Ø£¬·ñÔò½Ï´óµÄ×Ó½Úµã¾ÍºÍ¸¸½Úµã¶Ô»»
+					// æœ€å¤§çš„å­èŠ‚ç‚¹åœ¨å’Œçˆ¶èŠ‚ç‚¹æ¯”è¾ƒ
+					// å¦‚æœçˆ¶èŠ‚ç‚¹å¤§ï¼Œç›´æ¥è¿”å›ï¼Œå¦åˆ™è¾ƒå¤§çš„å­èŠ‚ç‚¹å°±å’Œçˆ¶èŠ‚ç‚¹å¯¹æ¢
 					if (data[indexes[pos]] > data[indexes[child_node]]) { break; }
 
 					std::swap(indexes[pos], indexes[child_node]);
 
-					// ×ßµ½ÏÂÒ»½Úµã
+					// èµ°åˆ°ä¸‹ä¸€èŠ‚ç‚¹
 					pos = child_node;
 				}
 			}
@@ -700,7 +700,7 @@ namespace DSA
 		void test_heap_sort() {
 			int n = 1000000;
 
-			// ²âÊÔ1 Ò»°ãĞÔ²âÊÔ
+			// æµ‹è¯•1 ä¸€èˆ¬æ€§æµ‹è¯•
 			cout<<"Test for random array, size = "<<n<<", random range [0, "<<n<<"]"<<endl;
 			int *arr1 = SortHelper::GenerateRandomArray(n,0,10);
 			int *arr2 = SortHelper::CopyArr(arr1, n);
@@ -726,7 +726,7 @@ namespace DSA
 			cout<<endl;
 
 
-			// ²âÊÔ2 ²âÊÔ½üºõÓĞĞòµÄÊı×é
+			// æµ‹è¯•2 æµ‹è¯•è¿‘ä¹æœ‰åºçš„æ•°ç»„
 			int swapTimes = 100;
 			cout<<"Test for nearly ordered array, size = "<<n<<", swap time = "<<swapTimes<<endl;
 			arr1 = SortHelper::GenerateRandomArray(n,0,10);
@@ -752,7 +752,7 @@ namespace DSA
 
 			cout<<endl;
 
-			// ²âÊÔ3 ²âÊÔ´æÔÚ°üº¬´óÁ¿ÏàÍ¬ÔªËØµÄÊı×é
+			// æµ‹è¯•3 æµ‹è¯•å­˜åœ¨åŒ…å«å¤§é‡ç›¸åŒå…ƒç´ çš„æ•°ç»„
 			cout<<"Test for random array, size = "<<n<<", random range [0,10]"<<endl;
 			arr1 = SortHelper::GenerateRandomArray(n,0,10);
 			arr2 = SortHelper::CopyArr(arr1, n);
@@ -762,7 +762,7 @@ namespace DSA
 			arr6 = SortHelper::CopyArr(arr1, n);
 
 			SortHelper::TestSort(L"Merge Sort", arr1, n, SortHelper::MergeSort);
-			// ÕâÖÖÇé¿öÏÂ, ÆÕÍ¨µÄQuickSortÍË»¯ÎªO(n^2)µÄËã·¨, ²»×ö²âÊÔ
+			// è¿™ç§æƒ…å†µä¸‹, æ™®é€šçš„QuickSorté€€åŒ–ä¸ºO(n^2)çš„ç®—æ³•, ä¸åšæµ‹è¯•
 			//SortTestHelper::testSort("Quick Sort", quickSort, arr2, n);
 			SortHelper::TestSort(L"Quick Sort 2 Ways", arr3, n, SortHelper::QuickSort2);
 			SortHelper::TestSort(L"Quick Sort 3 Ways", arr4, n, SortHelper::QuickSort3);
