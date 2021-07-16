@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="binary_search_tree.h" />
+    <ClInclude Include="edge.h" />
     <ClInclude Include="FileOps.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="homework.h" />

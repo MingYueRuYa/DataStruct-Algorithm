@@ -8,6 +8,9 @@
 #ifndef SparseGraph_
 #define SparseGraph_
 
+#include "edge.h"
+#include "ReadGraph.h"
+
 #include <stack>
 #include <queue>
 #include <vector>
@@ -15,8 +18,7 @@
 #include <memory>
 #include <cassert>
 #include <iostream>
-
-#include "ReadGraph.h"
+#include <iomanip>
 
 using std::cout;
 using std::endl;
@@ -511,6 +513,111 @@ public:
 
 };
 
+// 稀疏图 - 邻接表
+template<typename Weight>
+class WeightSparseGraph {
+private:
+	int _vertexs, _edges;	// 点和边数量
+	bool _directed;			// 是否为有向图
+	vector<vector<Edge<Weight> *>> _data;	// 图的具体数据
+
+public:	
+	WeightSparseGraph(int vertexs, bool directed) : _vertexs(vertexs), 
+													_edges(0),
+													_directed(directed) {
+		_data = vector<vector<Edge<Weight> *>>(_vertexs, vector<Edge<Weight> *>(0, nullptr));
+	}
+
+	~WeightSparseGraph() {
+		for (int i = 0; i < _vertexs; ++i) {
+			for (int j = 0; j < _data[i].size(); ++j) {
+				delete _data[i][j];
+			}	// for j
+		} // for i
+	}
+
+	int GetVertexCount() { return _vertexs; }
+	int GetEdgeCount() { return _edges; }
+
+	// 添加一条边
+	void addEdge(int vertex1, int vertex2, Weight weight) {
+		assert(vertex1 >= 0 && vertex1 < _vertexs);
+		assert(vertex2 >= 0 && vertex2 < _vertexs);
+
+		// 注意：由于在邻接表的情况，查找是否有重边需要遍历整个链表	
+		// 这里我们允许出现重复的边
+		_data[vertex1].push_back(new Edge<Weight>(vertex1, vertex2, weight));
+		if (vertex1 != vertex2 && !_directed) {
+			_data[vertex2].push_back(new Edge<Weight>(vertex1, vertex2, weight));
+		}
+		// 维护边的数据
+		_edges++;
+	}
+
+	// 检查vertex1和vertex2是否有边
+	bool hasEdge(int vertex1, int vertex2) {
+		assert(vertex1 >= 0 && vertex1 < _vertexs);
+		assert(vertex2 >= 0 && vertex2 < _vertexs);
+
+		for (int i = 0; i < _data[vertex1].size(); ++i) {
+			if (vertex2 == _data[vertex1][i]->other(vertex1)) { return true; }
+		}
+		return false;
+	}
+
+	// 显示图的信息
+	void show() {
+		for (int i = 0; i < _vertexs; ++i) {
+			cout << "vertex " << i << "\t";
+			for (int j = 0; j < _data[i].size(); ++j) {
+				cout << "(to: " << _data[i][j]->vertex2() << ", weight:" << _data[i][j]->weight() << ")\t";
+			}	// for j
+			cout << "\n";
+		} // for i
+	}
+
+	// 邻边迭代器, 传入一个图和一个顶点,
+	 // 迭代在这个图中和这个顶点向连的所有边
+	class adjIterator {
+	private:
+		WeightSparseGraph& G; // 图G的引用
+		int _vertex;
+		int _index;
+
+	public:
+		// 构造函数
+		adjIterator(SparseGraph& graph, int v) : G(graph) {
+			this->_vertex = v;
+			this->_index = 0;
+		}
+
+		~adjIterator() {}
+
+		// 返回图G中与顶点v相连接的第一个边
+		Edge<Weight>* begin() {
+			_index = 0;
+			if (!G.g[_vertex].empty())
+				return G.g[_vertex][_index];
+			// 若没有顶点和v相连接, 则返回NULL
+			return NULL;
+		}
+
+		// 返回图G中与顶点v相连接的下一个边
+		Edge<Weight>* next() {
+			_index += 1;
+			if (_index < G.g[_vertex].size())
+				return G.g[_vertex][_index];
+			return NULL;
+		}
+
+		// 查看是否已经迭代完了图G中与顶点v相连接的所有顶点
+		bool end() {
+			return _index >= G.g[_vertex].size();
+		}
+	};
+
+};
+
 	void test_graph() {
 		// 测试sparse,dense graph
 		string file_name = "../test_files/testG1.txt";
@@ -631,6 +738,19 @@ public:
 		ShortestPath<SparseGraph> bfs2(g2, 0);
 		cout << "BFS : ";
 		bfs2.ShowPath(3);
+	}
+
+	// 测试有权图
+	void test_weight_graph() {
+		int vertexs = 8;
+		string file_name = R"(../test_files/testWeightGraph.txt)";
+		cout << std::fixed << std::setprecision(2);
+
+		WeightSparseGraph<double> weight_sparse_graph(vertexs, false);
+		ReadGraph2<WeightSparseGraph<double>, double> read2(weight_sparse_graph, file_name);
+		weight_sparse_graph.show();	
+
+		cout << "\n";
 	}
 }
 }
