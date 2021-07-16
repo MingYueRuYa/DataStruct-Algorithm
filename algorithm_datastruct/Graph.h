@@ -516,25 +516,23 @@ public:
 // 稠密图 - 邻接矩阵
 template<typename Weight>
 class WeightDenseGraph {
+
+using GraphData = Edge<Weight>;
+using SharedGraphData = shared_ptr<GraphData>;
+
 private:
 	int _vertexs, _edges;	// 点和边数量
 	bool _directed;			// 是否为有向图
-	vector<vector<Edge<Weight> *>> _data;	// 图的具体数据
+	vector<vector<SharedGraphData>> _data;	// 图的具体数据
 
 public:	
 	WeightDenseGraph(int vertexs, bool directed) : _vertexs(vertexs), 
 													_edges(0),
 													_directed(directed) {
-		_data = vector<vector<Edge<Weight> *>>(_vertexs, vector<Edge<Weight> *>(_vertexs, nullptr));
+		_data = vector<vector<SharedGraphData>>(_vertexs, vector<SharedGraphData>(_vertexs, nullptr));
 	}
 
 	~WeightDenseGraph() {
-		for (int i = 0; i < _vertexs; ++i) {
-			for (int j = 0; j < _data[i].size(); ++j) {
-				if (nullptr == _data[i][j]) { continue; }
-				delete _data[i][j];
-			}	// for j
-		} // for i
 	}
 
 	int GetVertexCount() { return _vertexs; }
@@ -548,21 +546,20 @@ public:
 		//1.先要将原来的边删除，在添加新的边
 		if (hasEdge(vertex1, vertex2)) {
 
-			delete _data[vertex1][vertex2];
-			_data[vertex1][vertex2] = nullptr;
+			_data[vertex1][vertex2].reset();
+			// _data[vertex1][vertex2] = nullptr;
 			--_edges;
 
 			if (vertex1 != vertex2 && !_directed) {
-				delete _data[vertex2][vertex1];
-				_data[vertex2][vertex1] = nullptr;
+				_data[vertex2][vertex1].reset();
 				--_edges;
 			}
 		}
 
-		 _data[vertex1][vertex2] = new Edge<double>(vertex1, vertex1, weight);
+		 _data[vertex1][vertex2] = SharedGraphData(new GraphData(vertex1, vertex1, weight));
 
 		if (vertex1 != vertex2 && !_directed) {
-			 _data[vertex2][vertex1] = new Edge<double>(vertex2, vertex1, weight);
+			 _data[vertex2][vertex1] = SharedGraphData(new GraphData(vertex2, vertex1, weight));
 			++_edges;
 		}
 
@@ -574,7 +571,9 @@ public:
 		assert(vertex1 >= 0 && vertex1 < _vertexs);
 		assert(vertex2 >= 0 && vertex2 < _vertexs);
 
-		return _data[vertex1][vertex2] != nullptr;
+		return _data[vertex1][vertex2].use_count() != 0;
+
+		// return _data[vertex1][vertex2] != nullptr;
 	}
 
 	// 显示图的信息
@@ -582,7 +581,7 @@ public:
 		for (int i = 0; i < _vertexs; ++i) {
 			for (int j = 0; j < _data[i].size(); ++j) {
 				// cout << "(to: " << _data[i][j]->vertex2() << ", weight:" << _data[i][j]->weight() << ")\t";
-				if (nullptr == _data[i][j]) { cout << "NULL\t"; }
+				if (0 == _data[i][j].use_count()) { cout << "NULL\t"; }
 				else { cout << _data[i][j]->weight() << "\t"; }
 			}	// for j
 			cout << "\n";
@@ -607,18 +606,18 @@ public:
 		~adjIterator() {}
 
 		// 返回图G中与顶点v相连接的第一个边
-		Edge<Weight>* begin() {
+		SharedGraphData begin() {
 			_index = -1;
 			return next();
 		}
 
 		// 返回图G中与顶点v相连接的下一个边
-		Edge<Weight>* next() {
+		SharedGraphData next() {
 			_index += 1;
 			if (_index < G.g[_vertex].size()) {
-				return G.g[_vertex][_index] == nullptr ? nullptr : G.g[_vertex][_index];
+				return G.g[_vertex][_index].use_count() == 0 ? SharedGraphData() : G.g[_vertex][_index];
 			}
-			return NULL;
+			return SharedGraphData();
 		}
 
 		// 查看是否已经迭代完了图G中与顶点v相连接的所有顶点
@@ -629,27 +628,27 @@ public:
 
 };
 
+
 // 稀疏图 - 邻接表
 template<typename Weight>
 class WeightSparseGraph {
+
+using GraphData = Edge<Weight>;
+using SharedGraphData = shared_ptr<GraphData>;
+
 private:
 	int _vertexs, _edges;	// 点和边数量
 	bool _directed;			// 是否为有向图
-	vector<vector<Edge<Weight> *>> _data;	// 图的具体数据
+	vector<vector<SharedGraphData>> _data;	// 图的具体数据
 
 public:	
 	WeightSparseGraph(int vertexs, bool directed) : _vertexs(vertexs), 
 													_edges(0),
 													_directed(directed) {
-		_data = vector<vector<Edge<Weight> *>>(_vertexs, vector<Edge<Weight> *>(0, nullptr));
+		_data = vector<vector<SharedGraphData>>(_vertexs, vector<SharedGraphData>(0, nullptr));
 	}
 
 	~WeightSparseGraph() {
-		for (int i = 0; i < _vertexs; ++i) {
-			for (int j = 0; j < _data[i].size(); ++j) {
-				delete _data[i][j];
-			}	// for j
-		} // for i
 	}
 
 	int GetVertexCount() { return _vertexs; }
@@ -662,9 +661,9 @@ public:
 
 		// 注意：由于在邻接表的情况，查找是否有重边需要遍历整个链表	
 		// 这里我们允许出现重复的边
-		_data[vertex1].push_back(new Edge<Weight>(vertex1, vertex2, weight));
+		_data[vertex1].push_back(SharedGraphData(new GraphData(vertex1, vertex2, weight)));
 		if (vertex1 != vertex2 && !_directed) {
-			_data[vertex2].push_back(new Edge<Weight>(vertex1, vertex2, weight));
+			_data[vertex2].push_back(SharedGraphData(new GraphData(vertex1, vertex2, weight)));
 		}
 		// 维护边的数据
 		_edges++;
