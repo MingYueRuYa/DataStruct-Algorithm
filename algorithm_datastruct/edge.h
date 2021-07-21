@@ -27,6 +27,14 @@ public:
 	Edge() {}
 	~Edge() {}
 
+	Edge(const Edge &edge) {
+		if (this == &edge) { return; }
+
+		this->_vertex1 = edge._vertex1;
+		this->_vertex2 = edge._vertex2;
+		this->_weight = edge._weight;
+	}
+
 	// 返回第一个顶点
 	int vertex1() { return _vertex1; }
 
@@ -53,9 +61,19 @@ public:
 		return _weight < edge._weight;
 	}
 
+	bool operator>(const Edge<Weight> &edge)
+	{
+		return _weight > edge._weight;
+	}
+
 	bool operator<=(const Edge<Weight> &edge)
 	{
 		return _weight <= edge._weight;
+	}
+
+	bool operator>=(const Edge<Weight> &edge)
+	{
+		return _weight >= edge._weight;
 	}
 
 	bool operator==(const Edge<Weight> &edge)

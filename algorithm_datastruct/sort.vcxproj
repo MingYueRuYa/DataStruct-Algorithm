@@ -159,6 +159,7 @@
     <ClInclude Include="FileOps.h" />
     <ClInclude Include="heap.h" />
     <ClInclude Include="homework.h" />
+    <ClInclude Include="minimum_spanning_tree.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReadGraph.h" />
     <ClInclude Include="SequenceST.h" />

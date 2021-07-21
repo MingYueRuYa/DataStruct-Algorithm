@@ -7,6 +7,7 @@
 #include "sorthelper.h"
 #include "homework.h"
 #include "binary_search_tree.h"
+#include "minimum_spanning_tree.h"
 
 #include <iostream>
 
@@ -33,6 +34,7 @@ int main()
     // DSA::Heap::test_heap();
     // DSA::Heap::test_heap_sort();
     // DSA::Heap::test_index_max_heap();
+    // DSA::Heap::test_min_heap();
 
     // 测试集合
     // DSA::Union::test_uf(1000000);
@@ -51,7 +53,9 @@ int main()
     // DSA::Graph::test_graph_dfs();
     // DSA::Graph::test_graph_show_path();
     // DSA::Graph::test_shortest_path_graph();
-    DSA::Graph::test_weight_graph();
+    // DSA::Graph::test_weight_graph();
+
+    DSA::Graph::test_min_spanning_tree();
 
 	return 0;
 }
