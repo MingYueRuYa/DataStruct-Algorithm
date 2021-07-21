@@ -19,6 +19,7 @@ using std::vector;
 using std::shared_ptr;
 
 using DSA::Heap::MinHeap;
+using DSA::Heap::IndexMinHeap;
 using DSA::Graph::WeightSparseGraph;
 
 // 使用prim算法生成最小树
@@ -103,6 +104,89 @@ public:
 	}
 
 };
+
+// 优化的prim算法：
+// 优化点：
+// 1.采用优化的堆结构
+// 2.未优化的Prim算法，是遍历了所有的边，放到堆结构中。优化的算法：是判断是否比已经加入的边小。如果小，才加入到堆中。
+template<typename Graph, typename Weight>
+class PrimMST {
+
+using GraphData = Edge<Weight>;
+using SharedGraphData = shared_ptr<GraphData>;
+
+private:
+	Graph &_graph;									// 图的引用
+	IndexMinHeap<GraphData> _minHeap;					// 最小堆，算法辅助结构
+	bool *_marked;									// 标记数据，是遍历过程中是否已经被访问过
+	vector<Edge<Weight>> _mstEdges;					// 最小生成树包含的所有边
+	Weight _mstWeight;								// 最小生成树的权值
+	vector<SharedGraphData>_EdgeTo;					// 访问的点所对应的边
+
+	void visited(int vertex) {
+		assert(!_marked[vertex]);
+
+		_marked[vertex] = true;
+
+		// 将和顶点vertex所有链接的边都加入到最小堆中
+		typename Graph::adjIterator adj(_graph, vertex);
+		for (shared_ptr<Edge<Weight>> edge = adj.begin(); !adj.end(); edge = adj.next()) {
+			// 如果另个顶点已经被访问到了，则不需要加入堆中
+			if (_marked[edge->other(vertex)]) { continue; }
+
+			int other_vertex = edge->other(vertex);
+
+			// 如果这条边没有，则表示新加入的
+			if (nullptr == _EdgeTo[other_vertex] ) {
+				_EdgeTo[other_vertex] = edge;				
+				_minHeap.insert(other_vertex, *edge);
+			}
+			else if ( _EdgeTo[other_vertex]->weight() > edge->weight()) { 
+				// 已经有了边，需要判断新的边是否比原来的边小。如果比原来的小，则需要更新边的信息
+				_EdgeTo[other_vertex] = (edge);
+				_minHeap.change(other_vertex, *edge);
+			}
+		}
+	}
+public:
+	PrimMST(Graph &graph): _graph(graph), 
+						  _minHeap(IndexMinHeap<GraphData>(_graph.GetEdgeCount()+1)){
+		_marked = new bool[_graph.GetVertexCount()+1];
+		_EdgeTo.resize(_graph.GetEdgeCount());
+
+		for (int i = 0; i < _graph.GetVertexCount(); ++i) {
+			_marked[i] = false;
+		}
+
+		for (int i = 0; i < _graph.GetEdgeCount(); ++i) {
+			_EdgeTo[i] = nullptr;
+		}
+
+		_mstEdges.clear();
+
+		// prim
+		visited(0);
+
+		while (!_minHeap.isEmpty()) {
+			int vertex = _minHeap.extractMinIndex();
+			assert(_EdgeTo[vertex]);
+			_mstEdges.push_back(*(_EdgeTo[vertex]));
+			visited(vertex);
+		}
+
+		// 计算最小生成树的权值
+		_mstWeight = _mstEdges[0].weight();
+		for (int i = 1; i < _mstEdges.size(); ++i) {
+			_mstWeight += _mstEdges[i].weight();
+		}
+	}
+
+	vector<Edge<Weight>> AllEdges() { return _mstEdges; }
+
+	Weight result() { return _mstWeight; }
+
+};
+
 	void test_min_spanning_tree() {
 		string file_name = R"(../test_files/testWeightGraph.txt)";
 		int V = 8;
@@ -117,6 +201,18 @@ public:
 		for (int i = 0; i < mst.size(); i++)
 			cout << "(" << mst[i].vertex1() << "," << mst[i].vertex2() << ") "<< mst[i].weight() << endl;
 		cout << "The MST weight is: " << lazyPrimMST.result() << endl;
+
+		WeightSparseGraph<double> g2 = WeightSparseGraph<double>(V, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph2(g2, file_name);
+
+		// Test Lazy Prim MST
+		cout << "Test Prim MST:" << endl;
+		PrimMST<WeightSparseGraph<double>, double> PrimMST(g2);
+		vector<Edge<double>> mst2 = PrimMST.AllEdges();
+		for (int i = 0; i < mst2.size(); i++)
+			cout << "(" << mst2[i].vertex1() << "," << mst2[i].vertex2() << ") "<< mst2[i].weight() << endl;
+		cout << "The MST weight is: " << PrimMST.result() << endl;
+
 	}
 }
 }
