@@ -51,6 +51,9 @@
     <ClInclude Include="edge.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="minimum_spanning_tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

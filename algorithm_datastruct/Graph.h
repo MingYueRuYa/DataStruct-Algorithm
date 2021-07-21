@@ -701,7 +701,7 @@ public:
 
 	public:
 		// 构造函数
-		adjIterator(SparseGraph& graph, int v) : G(graph) {
+		adjIterator(WeightSparseGraph& graph, int v) : G(graph) {
 			this->_vertex = v;
 			this->_index = 0;
 		}
@@ -709,25 +709,25 @@ public:
 		~adjIterator() {}
 
 		// 返回图G中与顶点v相连接的第一个边
-		Edge<Weight>* begin() {
+		SharedGraphData begin() {
 			_index = 0;
-			if (!G.g[_vertex].empty())
-				return G.g[_vertex][_index];
+			if (!G._data[_vertex].empty())
+				return G._data[_vertex][_index];
 			// 若没有顶点和v相连接, 则返回NULL
 			return NULL;
 		}
 
 		// 返回图G中与顶点v相连接的下一个边
-		Edge<Weight>* next() {
+		SharedGraphData next() {
 			_index += 1;
-			if (_index < G.g[_vertex].size())
-				return G.g[_vertex][_index];
+			if (_index < G._data[_vertex].size())
+				return G._data[_vertex][_index];
 			return NULL;
 		}
 
 		// 查看是否已经迭代完了图G中与顶点v相连接的所有顶点
 		bool end() {
-			return _index >= G.g[_vertex].size();
+			return _index >= G._data[_vertex].size();
 		}
 	};
 
