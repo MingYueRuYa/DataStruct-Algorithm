@@ -663,7 +663,7 @@ public:
 		// 这里我们允许出现重复的边
 		_data[vertex1].push_back(SharedGraphData(new GraphData(vertex1, vertex2, weight)));
 		if (vertex1 != vertex2 && !_directed) {
-			_data[vertex2].push_back(SharedGraphData(new GraphData(vertex1, vertex2, weight)));
+			_data[vertex2].push_back(SharedGraphData(new GraphData(vertex2, vertex1, weight)));
 		}
 		// 维护边的数据
 		_edges++;
