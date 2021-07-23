@@ -6,6 +6,7 @@
 // 使用prim算法生成最小树
 
 // #include "edge.h"
+#include "union.h"
 #include "heap.h"
 #include "Graph.h"
 
@@ -22,17 +23,17 @@ using DSA::Heap::MinHeap;
 using DSA::Heap::IndexMinHeap;
 using DSA::Graph::WeightSparseGraph;
 
-// 使用prim算法生成最小树
-// 1.遍历一个起始顶点所有相关联的边，放到小顶堆中
-// 2.在小顶堆中弹出最小边的值，判断当前的边所对应的点是否已经遍历过，
-//   且这条边是否已经组成环,如果没有组成环，则是最小生成树的一条边。
-//	 接着上面的点，是否已经遍历过。如果没有，则再把与之相关联的边，加入到小顶堆中。
-// 3.如此反复操作，直到所有的点和边都已经遍历过，则结束.
 
 namespace DSA {
 
 namespace Graph {
 
+// 使用prim算法生成最小树
+// 1.遍历一个起始顶点所有相关联的边，放到小顶堆中
+// 2.在小顶堆中弹出最小边的值，判断当前的边所对应的点是否已经遍历过，
+//   且这条边的两个顶点是否都已经遍历过，如果没有遍历过则加入最小生成树边
+//	 接着上面的点，是否已经遍历过。如果没有，则再把与之相关联的边，加入到小顶堆中。
+// 3.如此反复操作，直到所有的点和边都已经遍历过，则结束.
 template<typename Graph, typename Weight>
 class LazyPrimMST {
 
@@ -187,6 +188,66 @@ public:
 
 };
 
+// Kruskal 算法
+// 1.遍历所有的边，加入到堆中
+// 2.从对中弹出权值最小的边，判断和已有的边顶点是否形成圈
+// 3.如果没有形成圈，则就是最小生成树的一条边，否则就不是
+// 4.不断的从最小堆中弹出权值最小的边，重复1-3步骤，直到堆中的数据为空 且 最小生成树的边=vertex_count-1
+template <typename Graph, typename Weight>
+class KruskalMST {
+
+using GraphData = Edge<Weight>;
+using SharedGraphData = shared_ptr<GraphData>;
+
+private:
+	vector<GraphData> _mst;	// 最小生成树包含的所有边
+	Weight _mstWeight;			// 最小生成树的权值
+	int _count = 0;
+
+public:
+	KruskalMST(Graph &graph) {
+		// 1.遍历所有的边，放到最小堆中	
+		MinHeap<GraphData> minHeap(graph.GetEdgeCount());
+		for (int i = 0; i < graph.GetVertexCount(); ++i) {
+			typename Graph::adjIterator adj(graph, i);
+			for (SharedGraphData data = adj.begin(); !adj.end(); data = adj.next()) {
+				// 如果这里不进行判断的话，(a, b)会插入一条数据到堆中，(b, a)也会插入一条数据到堆中
+				// 这样就会插入两条数据到堆中，这是没有必要的。所以就采取插入一条顶点较小的数据
+				++_count;
+				if (data->vertex1() > data->vertex2()) { continue; }
+				minHeap.insert(*data);
+
+			} // for data
+		} // for i
+		// 2.从堆中弹出最小边，并判断是否形成了环
+		Union::UnionFind1 uf = Union::UnionFind1(graph.GetVertexCount());
+		while (! minHeap.isEmpty() && _mst.size() < graph.GetVertexCount()-1) {
+			// 3.从堆中取出最小边
+			Edge<Weight> edge = minHeap.extractMin();
+
+			// 看该边的两个端点连通的，说明这条边将产生环，需要丢弃
+			if (uf.isConnected(edge.vertex1(), edge.vertex2())) {
+				continue;
+			}
+
+			// 否则，将这条边加入到最小生成树中
+			_mst.push_back(edge);
+			// 同时需要维护union，将边加入到union中
+			uf.unionElements(edge.vertex1(), edge.vertex2());
+		}
+
+		_mstWeight = _mst[0].weight();
+		for (int i = 1; i < _mst.size(); i++) {
+			_mstWeight += _mst[i].weight();
+		}
+
+	}
+
+	vector<GraphData> AllEdges() { return _mst; }
+
+	Weight result() { return _mstWeight; }
+};
+
 	void test_min_spanning_tree() {
 		string file_name = R"(../test_files/testWeightGraph.txt)";
 		int V = 8;
@@ -213,9 +274,20 @@ public:
 			cout << "(" << mst2[i].vertex1() << "," << mst2[i].vertex2() << ") "<< mst2[i].weight() << endl;
 		cout << "The MST weight is: " << PrimMST.result() << endl;
 
+		cout << "Test Kruskal MST:" << endl;
+		WeightSparseGraph<double> g3 = WeightSparseGraph<double>(V, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph3(g3, file_name);
+
+		KruskalMST<WeightSparseGraph<double>, double> KruskalMST(g3);
+		vector<Edge<double>> mst3 = KruskalMST.AllEdges();
+		for (int i = 0; i < mst3.size(); i++)
+			cout << "(" << mst3[i].vertex1() << "," << mst3[i].vertex2() << ") "<< mst3[i].weight() << endl;
+		cout << "The MST weight is: " << KruskalMST.result() << endl;
+
 	}
 }
 }
+
 
 #endif // minimum_spanning_tree_h
 
