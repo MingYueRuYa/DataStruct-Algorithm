@@ -55,7 +55,8 @@ int main()
     // DSA::Graph::test_shortest_path_graph();
     // DSA::Graph::test_weight_graph();
 
-    DSA::Graph::test_min_spanning_tree();
+    // DSA::Graph::test_min_spanning_tree();
+    DSA::Graph::test_compare_min_spanning_tree();
 
 	return 0;
 }

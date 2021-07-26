@@ -285,6 +285,127 @@ public:
 		cout << "The MST weight is: " << KruskalMST.result() << endl;
 
 	}
+
+	void test_compare_min_spanning_tree() {
+		string file_name = R"(../test_files/testWeightGraph.txt)";
+		string file_name2 = R"(../test_files/testWeightGraph-250-1273.txt)";
+		string file_name3 = R"(../test_files/testWeightGraph-1000-8433.txt)";
+		string file_name4 = R"(../test_files/testWeightGraph-10000-61731.txt)";
+
+		int V = 8, V2 = 250, V3 = 1000, V4 = 10000;
+
+		vector<std::pair<double, double>> time_weight_vc;
+
+		clock_t start_time, end_time;
+		// Test Lazy Prim MST
+		// cout << "-----------------Test Lazy Prim MST:-----------------" << endl;
+		WeightSparseGraph<double> g = WeightSparseGraph<double>(V, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph(g, file_name);
+		start_time = clock();
+		LazyPrimMST<WeightSparseGraph<double>, double> lazyPrimMST(g);
+		end_time = clock();
+		// cout << "The MST weight is: " << lazyPrimMST.result() << endl;
+		time_weight_vc.push_back(std::pair<double, double>(lazyPrimMST.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g2 = WeightSparseGraph<double>(V2, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph2(g2, file_name2);
+		start_time = clock();
+		LazyPrimMST<WeightSparseGraph<double>, double> lazyPrimMST2(g2);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(lazyPrimMST2.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+		// cout << "The MST weight is: " << lazyPrimMST2.result() << endl;
+
+		WeightSparseGraph<double> g3 = WeightSparseGraph<double>(V3, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph3(g3, file_name3);
+		start_time = clock();
+		LazyPrimMST<WeightSparseGraph<double>, double> lazyPrimMST3(g3);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(lazyPrimMST3.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g4 = WeightSparseGraph<double>(V4, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph4(g4, file_name4);
+		start_time = clock();
+		LazyPrimMST<WeightSparseGraph<double>, double> lazyPrimMST4(g4);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(lazyPrimMST4.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		// cout << "----------------Test Prim MST:-----------------" << endl;
+		WeightSparseGraph<double> g5 = WeightSparseGraph<double>(V, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph5(g5, file_name);
+		start_time = clock();
+		PrimMST<WeightSparseGraph<double>, double> PrimMST1(g5);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(PrimMST1.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g6 = WeightSparseGraph<double>(V2, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph6(g6, file_name2);
+		start_time = clock();
+		PrimMST<WeightSparseGraph<double>, double> PrimMST2(g6);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(PrimMST2.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g7 = WeightSparseGraph<double>(V3, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph7(g7, file_name3);
+		start_time = clock();
+		PrimMST<WeightSparseGraph<double>, double> PrimMST3(g7);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(PrimMST3.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g8 = WeightSparseGraph<double>(V4, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph8(g8, file_name4);
+		start_time = clock();
+		PrimMST<WeightSparseGraph<double>, double> PrimMST4(g8);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(PrimMST4.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		// cout << "----------------Test Kruskal MST:-----------------" << endl;
+		WeightSparseGraph<double> g9 = WeightSparseGraph<double>(V, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph9(g9, file_name);
+		start_time = clock();
+		KruskalMST<WeightSparseGraph<double>, double> KurskalMST1(g9);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(KurskalMST1.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g10 = WeightSparseGraph<double>(V2, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph10(g10, file_name2);
+		start_time = clock();
+		KruskalMST<WeightSparseGraph<double>, double> KurskalMST2(g10);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(KurskalMST2.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g11 = WeightSparseGraph<double>(V3, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph11(g11, file_name3);
+		start_time = clock();
+		KruskalMST<WeightSparseGraph<double>, double> KurskalMST3(g11);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(KurskalMST3.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		WeightSparseGraph<double> g12 = WeightSparseGraph<double>(V4, false);
+		ReadGraph2<WeightSparseGraph<double>, double> readGraph12(g12, file_name4);
+		start_time = clock();
+		KruskalMST<WeightSparseGraph<double>, double> KruskalMST4(g12);
+		end_time = clock();
+		time_weight_vc.push_back(std::pair<double, double>(KruskalMST4.result(), (double)(end_time-start_time)/CLOCKS_PER_SEC));
+
+		cout << "\t\t" << V << "\t\t\t" << V2 << "\t\t\t\t" << V3 << "\t\t\t\t" << V4 << "\t\t\t" << "\n";
+		cout << "Lazy Prim\t";
+		for (int i = 0; i < 4; ++i) {
+			cout << "weight:" << time_weight_vc[i].first << " time:" << time_weight_vc[i].second << "s\t";
+		}
+		cout << endl;
+		
+		cout << "Prim     \t";
+		for (int i = 4; i < 8; ++i) {
+			cout << "weight:" << time_weight_vc[i].first << " time:" << time_weight_vc[i].second << "s\t";
+		}
+		cout << endl;
+
+		cout << "Kruskal   \t";
+		for (int i = 8; i < 12; ++i) {
+			cout << "weight:" << time_weight_vc[i].first << " time:" << time_weight_vc[i].second << "s\t";
+		}
+		cout << endl;
+	}
 }
 }
 

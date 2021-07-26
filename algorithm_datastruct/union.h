@@ -23,7 +23,7 @@ namespace Union {
 	{
 	public:
 		UnionFind() {}
-		virtual ~UnionFind() { cout << "~UnionFind" << endl; }
+		virtual ~UnionFind() { /*cout << "~UnionFind" << endl; */}
 
 		virtual int find(int p) = 0;
 		virtual int isConnected(int p, int q) = 0;
@@ -46,7 +46,6 @@ namespace Union {
 
 		~UnionFind1() {
 			delete[] _id;
-			cout << "~UnionFind1" << endl; 
 		}
 
 		// 查找过程，查找元素p所对应的集合编号
